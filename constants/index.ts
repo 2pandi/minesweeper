@@ -5,11 +5,17 @@ export const GAME_STATUS = {
   L: "LOSE",
 } as const;
 
+export const GAME_MODE = {
+  B: "BOMB_MODE",
+  F: "FLAG_MODE",
+} as const;
+
 export const TILE_STATUS = {
   C: "CONCEALED",
   N: "NUMBERED",
   F: "FLAGGED",
   B: "BOOMED",
+  O: "OPENED",
 } as const;
 
 export const TILE_TYPE = {
@@ -17,3 +23,5 @@ export const TILE_TYPE = {
   N: "NUMBER",
   E: "EMPTY",
 } as const;
+
+export const BOMB = "💣";

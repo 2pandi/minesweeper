@@ -1,9 +1,60 @@
+@import "./variables.scss";
+
 button {
-  height: 3em;
-  width: 3em;
   border-radius: 0;
   border-style: outset;
   border-width: 5px;
   border-color: white;
-  background-color: lightgray;
+  background-color: $gray-400;
+  font-size: 0.8em;
+
+  &.opened {
+    border: solid $gray-500 0.5px;
+  }
+}
+
+// page
+.home {
+  width: 100vw;
+  min-width: 410px;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// component
+.container {
+  background-color: $gray-400;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 5px ridge;
+}
+
+.status_bar_container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 5px ridge;
+  position: relative;
+
+  .mid {
+    position: absolute;
+    left: calc(100% / 2.2);
+  }
+
+  .right {
+    display: flex;
+    gap: 10px;
+  }
+}
+
+.tile_box_container {
+  width: 100%;
+
+  .line {
+    display: flex;
+  }
 }
