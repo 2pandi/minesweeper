@@ -17,10 +17,10 @@ const placeBomb = (
 
     if (
       emptyMap[yPosition][xPosition] ||
-      (startX - 3 < xPosition &&
-        xPosition < startX + 3 &&
-        startY - 3 < yPosition &&
-        yPosition < startY + 3)
+      (startX - 2 < xPosition &&
+        xPosition < startX + 2 &&
+        startY - 2 < yPosition &&
+        yPosition < startY + 2)
     )
       continue;
 
