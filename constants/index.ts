@@ -25,3 +25,4 @@ export const TILE_TYPE = {
 } as const;
 
 export const BOMB = "💣";
+export const FLAG = "🚩";

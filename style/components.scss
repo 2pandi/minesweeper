@@ -1,18 +1,5 @@
 @import "./variables.scss";
 
-button {
-  border-radius: 0;
-  border-style: outset;
-  border-width: 5px;
-  border-color: white;
-  background-color: $gray-400;
-  font-size: 0.8em;
-
-  &.opened {
-    border: solid $gray-500 0.5px;
-  }
-}
-
 // page
 .home {
   width: 100vw;
@@ -56,5 +43,18 @@ button {
 
   .line {
     display: flex;
+  }
+}
+
+.tile {
+  border-radius: 0;
+  border-style: outset;
+  border-width: 5px;
+  border-color: white;
+  background-color: $gray-400;
+  font-size: 0.8em;
+
+  &.opened {
+    border: solid $gray-500 0.5px;
   }
 }

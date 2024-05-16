@@ -14,17 +14,13 @@ interface I_tileProps extends React.HTMLAttributes<HTMLButtonElement> {
 }
 
 export default function Tile(props: I_tileProps) {
-  const { type, value, style, x, y } = props;
+  const { type, value, style, x, y, onClick } = props;
   const [tileStatus, setTileStatus] = React.useState<T_status>("C");
-  const { status, start, startingPoint, setStartingPoint } = useGameStore();
 
-  const clickTileHandler = () => {
-    console.log(status);
-    console.log(startingPoint);
-    if (status === "R" && startingPoint[0] < 0) {
-      start();
-      setStartingPoint([x, y]);
-    }
+  const clickTileHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    onClick?.(e);
 
     switch (value) {
       case "💣":
@@ -34,13 +30,12 @@ export default function Tile(props: I_tileProps) {
       default:
         setTileStatus("N");
     }
-    console.log(value);
   };
 
   return (
     <button
-      className={`${tileStatus !== "C" ? "opened" : ""}`}
-      onClick={clickTileHandler}
+      className={`tile ${tileStatus !== "C" ? "opened" : ""}`}
+      onClick={(e) => clickTileHandler(e)}
       style={style}
     >
       {tileStatus === "C" ? "" : value}
