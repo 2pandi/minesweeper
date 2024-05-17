@@ -16,6 +16,8 @@ interface I_gameState {
   changeMode: (state: I_gameState["mode"]) => void;
 
   totalBomb: number;
+  flagBomb: () => void;
+  deflagBomb: () => void;
 
   map: T_mapTile[][];
   setMap: (newMap: I_gameState["map"]) => void;
@@ -66,6 +68,8 @@ export const useGameStore = create<I_gameState>()((set) => ({
   changeMode: (state) => set({ mode: state === "B" ? "F" : "B" }),
 
   totalBomb,
+  flagBomb: () => set((state) => ({ totalBomb: state.totalBomb - 1 })),
+  deflagBomb: () => set((state) => ({ totalBomb: state.totalBomb + 1 })),
 
   map: defaultMap,
   setMap: (newMap) => set({ map: newMap }),

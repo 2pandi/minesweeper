@@ -12,6 +12,8 @@ export default function TileBox() {
     start,
     mode,
     totalBomb,
+    flagBomb,
+    deflagBomb,
     status,
     map,
     setMap,
@@ -61,9 +63,11 @@ export default function TileBox() {
     switch (newOpenTileMap[y][x]) {
       case "F":
         newOpenTileMap[y][x] = "C";
+        deflagBomb();
         break;
       case "C":
         newOpenTileMap[y][x] = "F";
+        flagBomb();
         break;
       case "O":
         const totalFlag = countFlagAroundTile(x, y, openTileMap);
