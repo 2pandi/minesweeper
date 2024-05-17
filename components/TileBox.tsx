@@ -25,11 +25,20 @@ export default function TileBox() {
 
   const openTile = (x: number, y: number) => {
     const newOpenTileMap = openTileMap.map((line) => line.map((v) => v));
-    newOpenTileMap[y][x] = "O";
+
+    if (newOpenTileMap[y][x] !== "F") newOpenTileMap[y][x] = "O";
 
     if (isMapSet && !map[y][x]) {
       bangTile(x, y, newOpenTileMap, map);
     }
+
+    setOpenTileMap(newOpenTileMap);
+  };
+
+  const standFlag = (x: number, y: number) => {
+    const newOpenTileMap = openTileMap.map((line) => line.map((v) => v));
+    if (newOpenTileMap[y][x] === "F") newOpenTileMap[y][x] = "C";
+    else newOpenTileMap[y][x] = "F";
 
     setOpenTileMap(newOpenTileMap);
   };
@@ -40,8 +49,14 @@ export default function TileBox() {
       setStartingPoint([x, y]);
     }
 
-    if (mode === "B") {
-      openTile(x, y);
+    switch (mode) {
+      case "B":
+        openTile(x, y);
+        break;
+      case "F":
+        standFlag(x, y);
+        break;
+      default:
     }
   };
 
