@@ -37,8 +37,19 @@ export default function TileBox() {
 
   const standFlag = (x: number, y: number) => {
     const newOpenTileMap = openTileMap.map((line) => line.map((v) => v));
-    if (newOpenTileMap[y][x] === "F") newOpenTileMap[y][x] = "C";
-    else newOpenTileMap[y][x] = "F";
+
+    switch (newOpenTileMap[y][x]) {
+      case "F":
+        newOpenTileMap[y][x] = "C";
+        break;
+      case "C":
+        newOpenTileMap[y][x] = "F";
+        break;
+      case "O":
+        bangTile(x, y, newOpenTileMap, map);
+        break;
+      default:
+    }
 
     setOpenTileMap(newOpenTileMap);
   };

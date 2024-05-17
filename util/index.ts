@@ -117,42 +117,52 @@ export const bangTile = (
 ) => {
   let newY1 = y - 1;
   while (newY1 >= 0 && openTileMap[newY1][x] !== "O") {
+    if (openTileMap[newY1][x] === "F") break;
+    if (openTileMap[newY1][x] === "O") break;
     openTileMap[newY1][x] = "O";
-    if (!map[newY1][x]) bangTile(x, newY1, openTileMap, map);
     if (map[newY1][x]) break;
+    bangTile(x, newY1, openTileMap, map);
     newY1--;
   }
 
   let newY2 = y + 1;
   while (newY2 < map.length && openTileMap[newY2][x] !== "O") {
+    if (openTileMap[newY2][x] === "F") break;
+    if (openTileMap[newY2][x] === "O") break;
     openTileMap[newY2][x] = "O";
-    if (!map[newY2][x]) bangTile(x, newY2, openTileMap, map);
     if (map[newY2][x]) break;
+    bangTile(x, newY2, openTileMap, map);
     newY2++;
   }
 
   let newX1 = x - 1;
   while (newX1 >= 0 && openTileMap[y][newX1] !== "O") {
+    if (openTileMap[y][newX1] === "F") break;
+    if (openTileMap[y][newX1] === "O") break;
     openTileMap[y][newX1] = "O";
-    if (!map[y][newX1]) bangTile(newX1, y, openTileMap, map);
     if (map[y][newX1]) break;
+    bangTile(newX1, y, openTileMap, map);
     newX1--;
   }
 
   let newX2 = x + 1;
   while (newX2 < map[0].length && openTileMap[y][newX2] !== "O") {
+    if (openTileMap[y][newX2] === "F") break;
+    if (openTileMap[y][newX2] === "O") break;
     openTileMap[y][newX2] = "O";
-    if (!map[y][newX2]) bangTile(newX2, y, openTileMap, map);
     if (map[y][newX2]) break;
+    bangTile(newX2, y, openTileMap, map);
     newX2++;
   }
 
   let newY3 = y - 1,
     newX3 = x - 1;
   while (newY3 >= 0 && newX3 >= 0 && openTileMap[newY3][newX3] !== "O") {
+    if (openTileMap[newY3][newX3] === "F") break;
+    if (openTileMap[newY3][newX3] === "O") break;
     openTileMap[newY3][newX3] = "O";
-    if (!map[newY3][newX3]) bangTile(newX3, newY3, openTileMap, map);
     if (map[newY3][newX3]) break;
+    bangTile(newX3, newY3, openTileMap, map);
     newY3--;
     newX3--;
   }
@@ -164,9 +174,11 @@ export const bangTile = (
     newX4 >= 0 &&
     openTileMap[newY4][newX4] !== "O"
   ) {
+    if (openTileMap[newY4][newX4] === "F") break;
+    if (openTileMap[newY4][newX4] === "O") break;
     openTileMap[newY4][newX4] = "O";
-    if (!map[newY4][newX4]) bangTile(newX4, newY4, openTileMap, map);
     if (map[newY4][newX4]) break;
+    bangTile(newX4, newY4, openTileMap, map);
     newY4++;
     newX4--;
   }
@@ -178,9 +190,11 @@ export const bangTile = (
     newX5 < map[0].length &&
     openTileMap[newY5][newX5] !== "O"
   ) {
+    if (openTileMap[newY5][newX5] === "F") break;
+    if (openTileMap[newY5][newX5] === "O") break;
     openTileMap[newY5][newX5] = "O";
-    if (!map[newY5][newX5]) bangTile(newX5, newY5, openTileMap, map);
     if (map[newY5][newX5]) break;
+    bangTile(newX5, newY5, openTileMap, map);
     newY5++;
     newX5++;
   }
@@ -192,9 +206,11 @@ export const bangTile = (
     newX6 < map[0].length &&
     openTileMap[newY6][newX6] !== "O"
   ) {
+    if (openTileMap[newY6][newX6] === "F") break;
+    if (openTileMap[newY6][newX6] === "O") break;
     openTileMap[newY6][newX6] = "O";
-    if (!map[newY6][newX6]) bangTile(newX6, newY6, openTileMap, map);
     if (map[newY6][newX6]) break;
+    bangTile(newX6, newY6, openTileMap, map);
     newY6--;
     newX6++;
   }
