@@ -35,46 +35,57 @@ const placeNumber = (bombMap: Array<Array<T_mapTile>>) => {
   for (let i = 0; i < bombMap.length; i++) {
     for (let j = 0; j < bombMap[i].length; j++) {
       if (bombMap[i][j] === BOMB) {
+        // 상
         if (i - 1 >= 0) {
           if (typeof bombMap[i - 1][j] === "number") {
             bombMap[i - 1][j] = (bombMap[i - 1][j] as number) + 1;
           } else bombMap[i - 1][j] = 1;
-          if (j - 1 >= 0) {
-            if (typeof bombMap[i - 1][j - 1] === "number") {
-              bombMap[i - 1][j - 1] = (bombMap[i - 1][j - 1] as number) + 1;
-            } else bombMap[i - 1][j - 1] = 1;
-          }
-          if (j + 1 < bombMap[i].length) {
-            if (typeof bombMap[i - 1][j + 1] === "number") {
-              bombMap[i - 1][j + 1] = (bombMap[i - 1][j + 1] as number) + 1;
-            } else bombMap[i - 1][j + 1] = 1;
-          }
+
+          // 상 - 좌
+          if (j - 1 >= 0 && typeof bombMap[i - 1][j - 1] === "number") {
+            bombMap[i - 1][j - 1] = (bombMap[i - 1][j - 1] as number) + 1;
+          } else bombMap[i - 1][j - 1] = 1;
+
+          // 상 - 우
+          if (
+            j + 1 < bombMap[i].length &&
+            typeof bombMap[i - 1][j + 1] === "number"
+          ) {
+            bombMap[i - 1][j + 1] = (bombMap[i - 1][j + 1] as number) + 1;
+          } else bombMap[i - 1][j + 1] = 1;
         }
+        // 하
         if (i + 1 < bombMap.length) {
           if (typeof bombMap[i + 1][j] === "number") {
             bombMap[i + 1][j] = (bombMap[i + 1][j] as number) + 1;
           } else bombMap[i + 1][j] = 1;
-          if (j - 1 >= 0) {
-            if (typeof bombMap[i + 1][j - 1] === "number") {
-              bombMap[i + 1][j - 1] = (bombMap[i + 1][j - 1] as number) + 1;
-            } else bombMap[i + 1][j - 1] = 1;
-          }
-          if (j + 1 < bombMap[i].length) {
-            if (typeof bombMap[i + 1][j + 1] === "number") {
-              bombMap[i + 1][j + 1] = (bombMap[i + 1][j + 1] as number) + 1;
-            } else bombMap[i + 1][j + 1] = 1;
-          }
+
+          // 하 - 좌
+          if (j - 1 >= 0 && typeof bombMap[i + 1][j - 1] === "number") {
+            bombMap[i + 1][j - 1] = (bombMap[i + 1][j - 1] as number) + 1;
+          } else bombMap[i + 1][j - 1] = 1;
+
+          // 하 - 우
+          if (
+            j + 1 < bombMap[i].length &&
+            typeof bombMap[i + 1][j + 1] === "number"
+          ) {
+            bombMap[i + 1][j + 1] = (bombMap[i + 1][j + 1] as number) + 1;
+          } else bombMap[i + 1][j + 1] = 1;
         }
-        if (j - 1 >= 0) {
-          if (typeof bombMap[i][j - 1] === "number") {
-            bombMap[i][j - 1] = (bombMap[i][j - 1] as number) + 1;
-          } else bombMap[i][j - 1] = 1;
-        }
-        if (j + 1 < bombMap[i].length) {
-          if (typeof bombMap[i][j + 1] === "number") {
-            bombMap[i][j + 1] = (bombMap[i][j + 1] as number) + 1;
-          } else bombMap[i][j + 1] = 1;
-        }
+
+        // 좌
+        if (j - 1 >= 0 && typeof bombMap[i][j - 1] === "number") {
+          bombMap[i][j - 1] = (bombMap[i][j - 1] as number) + 1;
+        } else bombMap[i][j - 1] = 1;
+
+        // 우
+        if (
+          j + 1 < bombMap[i].length &&
+          typeof bombMap[i][j + 1] === "number"
+        ) {
+          bombMap[i][j + 1] = (bombMap[i][j + 1] as number) + 1;
+        } else bombMap[i][j + 1] = 1;
       }
     }
   }
@@ -83,16 +94,15 @@ const placeNumber = (bombMap: Array<Array<T_mapTile>>) => {
 };
 
 export const makeMap = (
+  map: T_mapTile[][],
   startingPoint: [number, number],
   x: number,
   y: number,
   totalBomb: number
 ) => {
-  const emptyMap = Array.from({
-    length: y,
-  }).map(() => Array.from({ length: x }).fill(undefined)) as undefined[][];
-
-  const newMap = placeBomb(emptyMap, totalBomb, x, y, startingPoint);
+  const newMap = placeBomb(map, totalBomb, x, y, startingPoint);
 
   return placeNumber(newMap);
 };
+
+export const openTile = (x: number, y: number) => {};
