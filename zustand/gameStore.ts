@@ -33,7 +33,7 @@ interface I_gameState {
 
 const mapXLen = 13;
 const mapYLen = 20;
-const totalBomb = 100;
+const totalBomb = 60;
 
 const defaultMap = Array.from({
   length: 20,
@@ -50,6 +50,7 @@ export const useGameStore = create<I_gameState>()((set) => ({
   restart: () =>
     set(() => ({
       status: "R",
+      totalBomb,
       map: Array.from({
         length: 20,
       }).map(() => Array.from({ length: 13 }).fill(undefined)) as undefined[][],
