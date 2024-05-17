@@ -15,13 +15,14 @@ export default function TileBox() {
     status,
     map,
     setMap,
+    isMapSet,
+    setIsMapSet,
     openTileMap,
     setOpenTileMap,
     startingPoint,
     setStartingPoint,
   } = useGameStore();
 
-  const [isMapSet, setIsMapSet] = React.useState<boolean>(false);
   const [isLongClick, setIsLongClick] = React.useState(false);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
   const [tempClassTiles, setTempClassTiles] = React.useState<
@@ -186,7 +187,7 @@ export default function TileBox() {
   }, [map, startingPoint]);
 
   React.useEffect(() => {
-    if (isMapSet && mode === "B") {
+    if (isMapSet && mode === "B" && startingPoint[0] >= 0) {
       openTile(startingPoint[0], startingPoint[1]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

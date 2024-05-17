@@ -104,6 +104,7 @@ export const makeMap = (
   totalBomb: number,
   mode: keyof typeof GAME_MODE
 ) => {
+  // console.log(map);
   const newMap = placeBomb(map, totalBomb, x, y, startingPoint, mode);
 
   return placeNumber(newMap);

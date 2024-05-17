@@ -10,6 +10,7 @@ interface I_gameState {
   start: () => void;
   lose: () => void;
   win: () => void;
+  restart: () => void;
 
   mode: keyof typeof GAME_MODE;
   changeMode: (state: I_gameState["mode"]) => void;
@@ -18,6 +19,8 @@ interface I_gameState {
 
   map: T_mapTile[][];
   setMap: (newMap: I_gameState["map"]) => void;
+  isMapSet: boolean;
+  setIsMapSet: (state: I_gameState["isMapSet"]) => void;
 
   openTileMap: T_openMapTile[][];
   setOpenTileMap: (newMap: I_gameState["openTileMap"]) => void;
@@ -42,6 +45,22 @@ export const useGameStore = create<I_gameState>()((set) => ({
   start: () => set(() => ({ status: "P" })),
   lose: () => set(() => ({ status: "L" })),
   win: () => set(() => ({ status: "W" })),
+  restart: () =>
+    set(() => ({
+      status: "R",
+      map: Array.from({
+        length: 20,
+      }).map(() => Array.from({ length: 13 }).fill(undefined)) as undefined[][],
+      openTileMap: (
+        Array.from({
+          length: 20,
+        }).map(() =>
+          Array.from({ length: 13 }).fill(undefined)
+        ) as undefined[][]
+      ).map((line) => line.map(() => "C")),
+      startingPoint: [-1, -1],
+      isMapSet: false,
+    })),
 
   mode: "B",
   changeMode: (state) => set({ mode: state === "B" ? "F" : "B" }),
@@ -50,6 +69,8 @@ export const useGameStore = create<I_gameState>()((set) => ({
 
   map: defaultMap,
   setMap: (newMap) => set({ map: newMap }),
+  isMapSet: false,
+  setIsMapSet: (state) => set({ isMapSet: state }),
 
   openTileMap: defaultMap.map((line) => line.map(() => "C")),
   setOpenTileMap: (newMap) => set({ openTileMap: newMap }),

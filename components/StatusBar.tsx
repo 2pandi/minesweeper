@@ -5,7 +5,7 @@ import { useGameStore } from "@/zustand/gameStore";
 import React from "react";
 
 export default function StatusBar() {
-  const { totalBomb, mode, changeMode } = useGameStore();
+  const { totalBomb, mode, changeMode, restart } = useGameStore();
 
   const clickModeSwitchHandler = () => {
     changeMode(mode);
@@ -15,7 +15,9 @@ export default function StatusBar() {
     <React.Fragment>
       <div className="status_bar_container">
         <div className="left">{totalBomb}</div>
-        <div className="mid">smile</div>
+        <div onClick={() => restart()} className="mid">
+          smile
+        </div>
         <div className="right">
           <button onClick={clickModeSwitchHandler}>
             {mode === "B" ? BOMB : FLAG}
