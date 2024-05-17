@@ -9,15 +9,26 @@ interface I_tileProps extends React.HTMLAttributes<HTMLButtonElement> {
   value: T_mapTile;
   x: number;
   y: number;
+  tempClassName?: string;
 }
 
 export default function Tile(props: I_tileProps) {
-  const { openStatus, value, style, onClick } = props;
+  const {
+    openStatus,
+    value,
+    style,
+    onMouseDown,
+    onMouseLeave,
+    onMouseUp,
+    tempClassName,
+  } = props;
 
   return (
     <button
-      className={`tile ${openStatus === "O" ? "opened" : ""}`}
-      onClick={onClick}
+      className={`tile ${tempClassName} ${openStatus === "O" ? "opened" : ""}`}
+      onMouseDown={onMouseDown}
+      onMouseUp={onMouseUp}
+      onMouseLeave={onMouseLeave}
       style={style}
     >
       {openStatus === "C" ? "" : openStatus === "F" ? FLAG : value}

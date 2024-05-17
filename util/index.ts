@@ -215,3 +215,33 @@ export const bangTile = (
     newX6++;
   }
 };
+
+export const countFlagAroundTile = (
+  x: number,
+  y: number,
+  openTileMap: T_openMapTile[][]
+) => {
+  const tiles: T_openMapTile[] = [];
+
+  if (y - 1 >= 0) {
+    tiles.push(openTileMap[y - 1][x]);
+
+    if (x - 1 >= 0) tiles.push(openTileMap[y - 1][x - 1]);
+
+    if (x + 1 < openTileMap[0].length) tiles.push(openTileMap[y - 1][x + 1]);
+  }
+
+  if (y + 1 < openTileMap.length) {
+    tiles.push(openTileMap[y + 1][x]);
+
+    if (x - 1 >= 0) tiles.push(openTileMap[y + 1][x - 1]);
+
+    if (x + 1 < openTileMap[0].length) tiles.push(openTileMap[y + 1][x + 1]);
+  }
+
+  if (x - 1 >= 0) tiles.push(openTileMap[y][x - 1]);
+
+  if (x + 1 < openTileMap[0].length) tiles.push(openTileMap[y][x + 1]);
+
+  return tiles.filter((v) => v === "F").length;
+};
