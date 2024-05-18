@@ -4,6 +4,7 @@ import React from "react";
 import Tile from "./Tile";
 import { useGameStore } from "@/zustand/gameStore";
 import { bangTile, countFlagAroundTile, makeMap } from "@/util";
+import { TOTAL_BOMB } from "@/constants";
 
 export default function TileBox() {
   const {
@@ -11,7 +12,7 @@ export default function TileBox() {
     mapYLen,
     start,
     mode,
-    totalBomb,
+    flaggableBomb,
     flagBomb,
     deflagBomb,
     status,
@@ -39,7 +40,8 @@ export default function TileBox() {
         break;
       case "C":
         newOpenTileMap[y][x] = "O";
-        if (isMapSet && !map[y][x]) bangTile(x, y, newOpenTileMap, map);
+        if (isMapSet && !map[y][x] && mode === "B")
+          bangTile(x, y, newOpenTileMap, map);
         break;
       case "O":
         const totalFlag = countFlagAroundTile(x, y, openTileMap);
@@ -48,8 +50,6 @@ export default function TileBox() {
         break;
       default:
     }
-
-    if (isMapSet && !map[y][x]) bangTile(x, y, newOpenTileMap, map);
 
     setOpenTileMap(newOpenTileMap);
   };
@@ -63,13 +63,16 @@ export default function TileBox() {
         deflagBomb();
         break;
       case "C":
-        newOpenTileMap[y][x] = "F";
-        flagBomb();
+        if (flaggableBomb > 0) {
+          newOpenTileMap[y][x] = "F";
+          flagBomb();
+        }
         break;
       case "O":
-        const totalFlag = countFlagAroundTile(x, y, openTileMap);
-        if (totalFlag >= (map[y][x] as number))
+        const flagsAroundTile = countFlagAroundTile(x, y, openTileMap);
+        if (flagsAroundTile >= (map[y][x] as number))
           bangTile(x, y, newOpenTileMap, map);
+        if (isMapSet && !map[y][x]) bangTile(x, y, newOpenTileMap, map);
         break;
       default:
     }
@@ -98,50 +101,48 @@ export default function TileBox() {
     return tempClassTiles.findIndex((v) => v[0] === x && v[1] === y) >= 0;
   };
 
+  const tempTileClassSetter = (x: number, y: number) => {
+    const totalFlag = countFlagAroundTile(x, y, openTileMap);
+    if (totalFlag < (map[y][x] as number)) {
+      const newTempClassTiles: [number, number][] = [];
+      if (y - 1 >= 0) {
+        if (openTileMap[y - 1][x] !== "F") newTempClassTiles.push([x, y - 1]);
+
+        if (x - 1 >= 0 && openTileMap[y - 1][x - 1] !== "F")
+          newTempClassTiles.push([x - 1, y - 1]);
+        if (x + 1 < openTileMap[0].length && openTileMap[y - 1][x + 1] !== "F")
+          newTempClassTiles.push([x + 1, y - 1]);
+      }
+      if (y + 1 < openTileMap.length) {
+        if (openTileMap[y + 1][x] !== "F") newTempClassTiles.push([x, y + 1]);
+
+        if (x - 1 >= 0 && openTileMap[y + 1][x - 1] !== "F")
+          newTempClassTiles.push([x - 1, y + 1]);
+        if (x + 1 < openTileMap[0].length && openTileMap[y + 1][x + 1] !== "F")
+          newTempClassTiles.push([x + 1, y + 1]);
+      }
+      if (x - 1 >= 0 && openTileMap[y][x - 1] !== "F")
+        newTempClassTiles.push([x - 1, y]);
+      if (x + 1 < openTileMap[0].length && openTileMap[y][x + 1] !== "F")
+        newTempClassTiles.push([x + 1, y]);
+
+      setTempClassTiles(newTempClassTiles);
+    }
+  };
+
   const mouseDownHandler = (x: number, y: number) => {
     if (openTileMap[y][x] === "O" && typeof map[y][x] === "number") {
-      const totalFlag = countFlagAroundTile(x, y, openTileMap);
-      if (totalFlag < (map[y][x] as number)) {
-        const newTempClassTiles: [number, number][] = [];
-        if (y - 1 >= 0) {
-          if (openTileMap[y - 1][x] !== "F") newTempClassTiles.push([x, y - 1]);
-
-          if (x - 1 >= 0 && openTileMap[y - 1][x - 1] !== "F")
-            newTempClassTiles.push([x - 1, y - 1]);
-          if (
-            x + 1 < openTileMap[0].length &&
-            openTileMap[y - 1][x + 1] !== "F"
-          )
-            newTempClassTiles.push([x + 1, y - 1]);
-        }
-        if (y + 1 < openTileMap.length) {
-          if (openTileMap[y + 1][x] !== "F") newTempClassTiles.push([x, y + 1]);
-
-          if (x - 1 >= 0 && openTileMap[y + 1][x - 1] !== "F")
-            newTempClassTiles.push([x - 1, y + 1]);
-          if (
-            x + 1 < openTileMap[0].length &&
-            openTileMap[y + 1][x + 1] !== "F"
-          )
-            newTempClassTiles.push([x + 1, y + 1]);
-        }
-        if (x - 1 >= 0 && openTileMap[y][x - 1] !== "F")
-          newTempClassTiles.push([x - 1, y]);
-        if (x + 1 < openTileMap[0].length && openTileMap[y][x + 1] !== "F")
-          newTempClassTiles.push([x + 1, y]);
-
-        setTempClassTiles(newTempClassTiles);
-      }
+      tempTileClassSetter(x, y);
     }
+
+    if (mode === "F" && status === "R") setStartingPoint([x, y]);
 
     timeoutRef.current = setTimeout(() => {
       setIsLongClick(true);
 
       switch (mode) {
         case "B":
-          if (status === "R") {
-            start();
-          }
+          if (status === "R") start();
           standFlag(x, y);
           break;
         case "F":
@@ -150,6 +151,7 @@ export default function TileBox() {
             setStartingPoint([x, y]);
           }
           openTile(x, y);
+
           break;
         default:
       }
@@ -179,7 +181,7 @@ export default function TileBox() {
         startingPoint,
         mapXLen,
         mapYLen,
-        totalBomb,
+        flaggableBomb,
         mode
       );
       setMap(newMap);
@@ -188,7 +190,7 @@ export default function TileBox() {
   }, [status, startingPoint]);
 
   React.useEffect(() => {
-    if (!isMapSet && startingPoint[0] >= 0) {
+    if (!isMapSet && startingPoint[0] >= 0 && status === "P") {
       setIsMapSet(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -196,7 +198,11 @@ export default function TileBox() {
 
   React.useEffect(() => {
     if (isMapSet && startingPoint[0] >= 0) {
-      openTile(startingPoint[0], startingPoint[1]);
+      if (mode === "B") openTile(startingPoint[0], startingPoint[1]);
+
+      if (mode === "F" && flaggableBomb === TOTAL_BOMB) {
+        bangTile(startingPoint[0], startingPoint[1], openTileMap, map);
+      }
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

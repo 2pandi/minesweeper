@@ -1,5 +1,11 @@
 import { T_mapTile, T_openMapTile } from "@/interface";
-import { GAME_MODE, GAME_STATUS } from "./../constants/index";
+import {
+  GAME_MODE,
+  GAME_STATUS,
+  MAP_X_LENGTH,
+  MAP_Y_LENGTH,
+  TOTAL_BOMB,
+} from "./../constants/index";
 import { create } from "zustand";
 
 interface I_gameState {
@@ -15,7 +21,7 @@ interface I_gameState {
   mode: keyof typeof GAME_MODE;
   changeMode: (state: I_gameState["mode"]) => void;
 
-  totalBomb: number;
+  flaggableBomb: number;
   flagBomb: () => void;
   deflagBomb: () => void;
 
@@ -31,17 +37,13 @@ interface I_gameState {
   setStartingPoint: (point: I_gameState["startingPoint"]) => void;
 }
 
-const mapXLen = 13;
-const mapYLen = 20;
-const totalBomb = 60;
-
 const defaultMap = Array.from({
   length: 20,
 }).map(() => Array.from({ length: 13 }).fill(undefined)) as undefined[][];
 
 export const useGameStore = create<I_gameState>()((set) => ({
-  mapXLen,
-  mapYLen,
+  mapXLen: MAP_X_LENGTH,
+  mapYLen: MAP_Y_LENGTH,
 
   status: "R",
   start: () => set(() => ({ status: "P" })),
@@ -50,7 +52,7 @@ export const useGameStore = create<I_gameState>()((set) => ({
   restart: () =>
     set(() => ({
       status: "R",
-      totalBomb,
+      flaggableBomb: TOTAL_BOMB,
       map: Array.from({
         length: 20,
       }).map(() => Array.from({ length: 13 }).fill(undefined)) as undefined[][],
@@ -68,9 +70,10 @@ export const useGameStore = create<I_gameState>()((set) => ({
   mode: "B",
   changeMode: (state) => set({ mode: state === "B" ? "F" : "B" }),
 
-  totalBomb,
-  flagBomb: () => set((state) => ({ totalBomb: state.totalBomb - 1 })),
-  deflagBomb: () => set((state) => ({ totalBomb: state.totalBomb + 1 })),
+  flaggableBomb: TOTAL_BOMB,
+  flagBomb: () => set((state) => ({ flaggableBomb: state.flaggableBomb - 1 })),
+  deflagBomb: () =>
+    set((state) => ({ flaggableBomb: state.flaggableBomb + 1 })),
 
   map: defaultMap,
   setMap: (newMap) => set({ map: newMap }),

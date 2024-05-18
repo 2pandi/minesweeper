@@ -26,3 +26,7 @@ export const TILE_TYPE = {
 
 export const BOMB = "💣";
 export const FLAG = "🚩";
+
+export const TOTAL_BOMB = 50;
+export const MAP_X_LENGTH = 13;
+export const MAP_Y_LENGTH = 20;
