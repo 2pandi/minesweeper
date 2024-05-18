@@ -39,6 +39,7 @@ export default function TileBox() {
         break;
       case "C":
         newOpenTileMap[y][x] = "O";
+        if (isMapSet && !map[y][x]) bangTile(x, y, newOpenTileMap, map);
         break;
       case "O":
         const totalFlag = countFlagAroundTile(x, y, openTileMap);
@@ -48,11 +49,7 @@ export default function TileBox() {
       default:
     }
 
-    if (newOpenTileMap[y][x] !== "F") newOpenTileMap[y][x] = "O";
-
-    if (isMapSet && !map[y][x]) {
-      bangTile(x, y, newOpenTileMap, map);
-    }
+    if (isMapSet && !map[y][x]) bangTile(x, y, newOpenTileMap, map);
 
     setOpenTileMap(newOpenTileMap);
   };
@@ -136,13 +133,22 @@ export default function TileBox() {
         setTempClassTiles(newTempClassTiles);
       }
     }
+
     timeoutRef.current = setTimeout(() => {
       setIsLongClick(true);
+
       switch (mode) {
         case "B":
+          if (status === "R") {
+            start();
+          }
           standFlag(x, y);
           break;
         case "F":
+          if (status === "R") {
+            start();
+            setStartingPoint([x, y]);
+          }
           openTile(x, y);
           break;
         default:
@@ -151,12 +157,10 @@ export default function TileBox() {
   };
 
   const mouseUpHandler = (x: number, y: number) => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-    if (!isLongClick) {
-      clickTileHandler(x, y);
-    }
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+    if (!isLongClick) clickTileHandler(x, y);
+
     setIsLongClick(false);
     setTempClassTiles([]);
   };
@@ -169,7 +173,7 @@ export default function TileBox() {
   };
 
   React.useEffect(() => {
-    if (status === "P" && startingPoint[0] >= 0) {
+    if (status === "P" && (startingPoint[0] >= 0 || mode === "B")) {
       const newMap = makeMap(
         map,
         startingPoint,
@@ -191,9 +195,10 @@ export default function TileBox() {
   }, [map, startingPoint]);
 
   React.useEffect(() => {
-    if (isMapSet && mode === "B" && startingPoint[0] >= 0) {
+    if (isMapSet && startingPoint[0] >= 0) {
       openTile(startingPoint[0], startingPoint[1]);
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMapSet]);
 

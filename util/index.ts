@@ -16,16 +16,14 @@ const placeBomb = (
     const xPosition = Math.floor(Math.random() * maxX);
     const yPosition = Math.floor(Math.random() * maxY);
 
-    if (mode === "B") {
-      if (
-        emptyMap[yPosition][xPosition] === BOMB ||
-        (startX - 2 < xPosition &&
-          xPosition < startX + 2 &&
-          startY - 2 < yPosition &&
-          yPosition < startY + 2)
-      )
-        continue;
-    }
+    if (
+      emptyMap[yPosition][xPosition] === BOMB ||
+      (startX - 2 < xPosition &&
+        xPosition < startX + 2 &&
+        startY - 2 < yPosition &&
+        yPosition < startY + 2)
+    )
+      continue;
 
     emptyMap[yPosition][xPosition] = BOMB;
     leftBomb--;
