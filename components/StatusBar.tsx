@@ -10,12 +10,16 @@ export default function StatusBar() {
   return (
     <React.Fragment>
       <div className="status_bar_container">
-        <div className="left">{flaggableBomb}</div>
+        <div className="left">
+          <div className="flaggable_bomb_counter">
+            {String(flaggableBomb).padStart(3, "0")}
+          </div>
+        </div>
         <div onClick={() => restart()} className="mid">
           {status === "W" ? "😎" : status === "L" ? "😵" : "🙂"}
         </div>
         <div className="right">
-          <button onClick={() => changeMode(mode)}>
+          <button onClick={() => changeMode(mode)} className="mode_switch">
             {mode === "B" ? BOMB : FLAG}
           </button>
           <div>time</div>
