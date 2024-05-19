@@ -102,7 +102,8 @@ export const bangTile = (
   x: number,
   y: number,
   openTileMap: T_openMapTile[][],
-  map: T_mapTile[][]
+  map: T_mapTile[][],
+  lose: () => void
 ) => {
   const directions = [
     { dx: 0, dy: -1 }, // 위
@@ -126,8 +127,9 @@ export const bangTile = (
       if (openTileMap[newY][newX] === "O" || openTileMap[newY][newX] === "F")
         break;
       openTileMap[newY][newX] = "O";
+      if (map[newY][newX] === BOMB) lose();
       if (map[newY][newX]) break;
-      bangTile(newX, newY, openTileMap, map);
+      bangTile(newX, newY, openTileMap, map, lose);
       newX += dx;
       newY += dy;
     }
