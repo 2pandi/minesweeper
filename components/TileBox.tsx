@@ -4,7 +4,7 @@ import React from "react";
 import Tile from "./Tile";
 import { useGameStore } from "@/zustand/gameStore";
 import { bangTile, countFlagAroundTile, makeMap } from "@/util";
-import { TOTAL_BOMB } from "@/constants";
+import { BOMB, TOTAL_BOMB } from "@/constants";
 
 export default function TileBox() {
   const {
@@ -39,6 +39,8 @@ export default function TileBox() {
       const newOpenTileMap = openTileMap.map((line) => line.map((v) => v));
       if (status === "L") return;
 
+      if (map[y][x] === BOMB) lose();
+
       switch (newOpenTileMap[y][x]) {
         case "F":
           break;
@@ -52,9 +54,6 @@ export default function TileBox() {
           const totalFlag = countFlagAroundTile(x, y, openTileMap);
           if (totalFlag >= (map[y][x] as number))
             bangTile(x, y, newOpenTileMap, map);
-          break;
-        case "B":
-          lose();
           break;
         default:
       }
@@ -95,17 +94,19 @@ export default function TileBox() {
       setStartingPoint([x, y]);
     }
 
-    if (map[y][x] === undefined && isMapSet && openTileMap[y][x] !== "F")
-      bangTile(x, y, openTileMap, map);
+    if (status === "P") {
+      if (map[y][x] === undefined && isMapSet && openTileMap[y][x] !== "F")
+        bangTile(x, y, openTileMap, map);
 
-    switch (mode) {
-      case "B":
-        openTile(x, y);
-        break;
-      case "F":
-        standFlag(x, y);
-        break;
-      default:
+      switch (mode) {
+        case "B":
+          openTile(x, y);
+          break;
+        case "F":
+          standFlag(x, y);
+          break;
+        default:
+      }
     }
   };
 
