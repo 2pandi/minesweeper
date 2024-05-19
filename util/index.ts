@@ -98,12 +98,22 @@ export const makeMap = (
   return placeNumber(newMap);
 };
 
+export const isAllTileOpen = (openTileMap: T_openMapTile[][]) => {
+  for (let i = 0; i < openTileMap.length; i++) {
+    for (let j = 0; j < openTileMap[0].length; j++) {
+      if (openTileMap[i][j] === "C") return false;
+    }
+  }
+  return true;
+};
+
 export const bangTile = (
   x: number,
   y: number,
   openTileMap: T_openMapTile[][],
   map: T_mapTile[][],
-  lose: () => void
+  lose: () => void,
+  win: () => void
 ) => {
   const directions = [
     { dx: 0, dy: -1 }, // 위
@@ -127,15 +137,17 @@ export const bangTile = (
       if (openTileMap[newY][newX] === "O" || openTileMap[newY][newX] === "F")
         break;
       openTileMap[newY][newX] = "O";
-      if (map[newY][newX] === BOMB) lose();
+      if (map[newY][newX] === BOMB) return lose();
       if (map[newY][newX]) break;
-      bangTile(newX, newY, openTileMap, map, lose);
+      bangTile(newX, newY, openTileMap, map, lose, win);
       newX += dx;
       newY += dy;
     }
   };
 
   directions.forEach(({ dx, dy }) => processBang(dx, dy));
+
+  if (isAllTileOpen(openTileMap)) return win();
 };
 
 export const countFlagAroundTile = (

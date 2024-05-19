@@ -3,7 +3,7 @@
 import React from "react";
 import Tile from "./Tile";
 import { useGameStore } from "@/zustand/gameStore";
-import { bangTile, countFlagAroundTile, makeMap } from "@/util";
+import { bangTile, countFlagAroundTile, isAllTileOpen, makeMap } from "@/util";
 import { BOMB, TOTAL_BOMB } from "@/constants";
 
 export default function TileBox() {
@@ -45,15 +45,15 @@ export default function TileBox() {
         case "F":
           break;
         case "C":
-          if (isMapSet && map[y][x] === undefined && mode === "B")
-            bangTile(x, y, newOpenTileMap, map, lose);
+          if (isMapSet && map[y][x] === undefined)
+            bangTile(x, y, newOpenTileMap, map, lose, win);
           newOpenTileMap[y][x] = "O";
 
           break;
         case "O":
           const totalFlag = countFlagAroundTile(x, y, openTileMap);
           if (totalFlag >= (map[y][x] as number))
-            bangTile(x, y, newOpenTileMap, map, lose);
+            bangTile(x, y, newOpenTileMap, map, lose, win);
           break;
         default:
       }
@@ -79,8 +79,9 @@ export default function TileBox() {
       case "O":
         const flagsAroundTile = countFlagAroundTile(x, y, openTileMap);
         if (flagsAroundTile >= (map[y][x] as number))
-          bangTile(x, y, newOpenTileMap, map, lose);
-        if (isMapSet && !map[y][x]) bangTile(x, y, newOpenTileMap, map, lose);
+          bangTile(x, y, newOpenTileMap, map, lose, win);
+        if (isMapSet && !map[y][x])
+          bangTile(x, y, newOpenTileMap, map, lose, win);
         break;
       default:
     }
@@ -94,9 +95,16 @@ export default function TileBox() {
       setStartingPoint([x, y]);
     }
 
+    if (mode === "F") standFlag(x, y);
+
     if (status === "P") {
-      if (map[y][x] === undefined && isMapSet && openTileMap[y][x] !== "F")
-        bangTile(x, y, openTileMap, map, lose);
+      if (
+        map[y][x] === undefined &&
+        isMapSet &&
+        openTileMap[y][x] !== "F" &&
+        mode === "B"
+      )
+        bangTile(x, y, openTileMap, map, lose, win);
 
       switch (mode) {
         case "B":
@@ -147,7 +155,11 @@ export default function TileBox() {
   };
 
   const mouseDownHandler = (x: number, y: number) => {
-    if (openTileMap[y][x] === "O" && typeof map[y][x] === "number")
+    if (
+      openTileMap[y][x] === "O" &&
+      typeof map[y][x] === "number" &&
+      status === "P"
+    )
       tempTileClassSetter(x, y);
 
     timeoutRef.current = setTimeout(() => {
@@ -209,26 +221,22 @@ export default function TileBox() {
       if (mode === "B" && startingPoint[0] >= 0)
         openTile(startingPoint[0], startingPoint[1]);
 
-      if (mode === "F" && flaggableBomb === TOTAL_BOMB) {
-        bangTile(startingPoint[0], startingPoint[1], openTileMap, map, lose);
-        openTile(startingPoint[0], startingPoint[1]);
-      }
+      if (mode === "F" && flaggableBomb === TOTAL_BOMB)
+        bangTile(
+          startingPoint[0],
+          startingPoint[1],
+          openTileMap,
+          map,
+          lose,
+          win
+        );
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMapSet]);
+  }, [isMapSet, isLongClick]);
 
   React.useEffect(() => {
     if (!flaggableBomb) {
-      const isAllTileOpen = () => {
-        for (let i = 0; i < openTileMap.length; i++) {
-          for (let j = 0; j < openTileMap[0].length; j++) {
-            if (openTileMap[i][j] === "C") return false;
-          }
-          return true;
-        }
-      };
-      if (isAllTileOpen()) win();
+      if (isAllTileOpen(openTileMap)) win();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [flaggableBomb]);
