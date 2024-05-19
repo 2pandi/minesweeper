@@ -78,10 +78,12 @@ export default function TileBox() {
         break;
       case "O":
         const flagsAroundTile = countFlagAroundTile(x, y, openTileMap);
-        if (flagsAroundTile >= (map[y][x] as number))
+        if (
+          flagsAroundTile >= (map[y][x] as number) ||
+          (isMapSet && !map[y][x])
+        )
           bangTile(x, y, newOpenTileMap, map, lose, win);
-        if (isMapSet && !map[y][x])
-          bangTile(x, y, newOpenTileMap, map, lose, win);
+
         break;
       default:
     }
@@ -90,30 +92,18 @@ export default function TileBox() {
   };
 
   const clickTileHandler = (x: number, y: number) => {
-    if (status === "R") {
-      start();
-      setStartingPoint([x, y]);
-    }
+    if (status !== "W" && status !== "L") {
+      if (status === "R") {
+        start();
+        if (mode === "B") setStartingPoint([x, y]);
+      }
 
-    if (mode === "F") standFlag(x, y);
+      if (mode === "F") standFlag(x, y);
 
-    if (status === "P") {
-      if (
-        map[y][x] === undefined &&
-        isMapSet &&
-        openTileMap[y][x] !== "F" &&
-        mode === "B"
-      )
-        bangTile(x, y, openTileMap, map, lose, win);
-
-      switch (mode) {
-        case "B":
-          openTile(x, y);
-          break;
-        case "F":
-          standFlag(x, y);
-          break;
-        default:
+      if (status === "P" && mode === "B") {
+        if (map[y][x] === undefined && isMapSet && openTileMap[y][x] !== "F")
+          bangTile(x, y, openTileMap, map, lose, win);
+        openTile(x, y);
       }
     }
   };
@@ -200,7 +190,7 @@ export default function TileBox() {
 
   // starting point 설정후 map setting
   React.useEffect(() => {
-    if (status === "P" && (startingPoint[0] >= 0 || mode === "B")) {
+    if (status === "P" && (startingPoint[0] >= 0 || mode === "F")) {
       const newMap = makeMap(
         map,
         startingPoint,
