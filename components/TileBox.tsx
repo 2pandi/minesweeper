@@ -11,6 +11,8 @@ export default function TileBox() {
     mapXLen,
     mapYLen,
     start,
+    lose,
+    win,
     mode,
     flaggableBomb,
     flagBomb,
@@ -34,19 +36,26 @@ export default function TileBox() {
 
   const openTile = (x: number, y: number) => {
     const newOpenTileMap = openTileMap.map((line) => line.map((v) => v));
+    if (status === "L") return;
+
+    console.log(status);
 
     switch (newOpenTileMap[y][x]) {
       case "F":
         break;
       case "C":
         newOpenTileMap[y][x] = "O";
-        if (isMapSet && !map[y][x] && mode === "B")
+        if (isMapSet && map[y][x] === undefined && mode === "B")
           bangTile(x, y, newOpenTileMap, map);
+        console.log(newOpenTileMap);
         break;
       case "O":
         const totalFlag = countFlagAroundTile(x, y, openTileMap);
         if (totalFlag >= (map[y][x] as number))
           bangTile(x, y, newOpenTileMap, map);
+        break;
+      case "B":
+        lose();
         break;
       default:
     }
@@ -95,6 +104,11 @@ export default function TileBox() {
         break;
       default:
     }
+
+    if (map[y][x] === undefined) {
+      bangTile(x, y, openTileMap, map);
+      console.log("bang");
+    }
   };
 
   const checkTempClassTile = ([x, y]: [number, number]) => {
@@ -131,9 +145,8 @@ export default function TileBox() {
   };
 
   const mouseDownHandler = (x: number, y: number) => {
-    if (openTileMap[y][x] === "O" && typeof map[y][x] === "number") {
+    if (openTileMap[y][x] === "O" && typeof map[y][x] === "number")
       tempTileClassSetter(x, y);
-    }
 
     if (mode === "F" && status === "R") setStartingPoint([x, y]);
 
@@ -150,12 +163,11 @@ export default function TileBox() {
             start();
             setStartingPoint([x, y]);
           }
-          openTile(x, y);
 
           break;
         default:
       }
-    }, 300);
+    }, 500);
   };
 
   const mouseUpHandler = (x: number, y: number) => {
@@ -174,6 +186,7 @@ export default function TileBox() {
     setIsLongClick(false);
   };
 
+  // starting point 설정후 map setting
   React.useEffect(() => {
     if (status === "P" && (startingPoint[0] >= 0 || mode === "B")) {
       const newMap = makeMap(
@@ -185,24 +198,23 @@ export default function TileBox() {
         mode
       );
       setMap(newMap);
+      setIsMapSet(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status, startingPoint]);
 
   React.useEffect(() => {
-    if (!isMapSet && startingPoint[0] >= 0 && status === "P") {
-      setIsMapSet(true);
-    }
+    // if (!isMapSet && startingPoint[0] >= 0 && status === "P") setIsMapSet(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map, startingPoint]);
 
+  // 최초 시작시 open tile
   React.useEffect(() => {
     if (isMapSet && startingPoint[0] >= 0) {
       if (mode === "B") openTile(startingPoint[0], startingPoint[1]);
 
-      if (mode === "F" && flaggableBomb === TOTAL_BOMB) {
+      if (mode === "F" && flaggableBomb === TOTAL_BOMB)
         bangTile(startingPoint[0], startingPoint[1], openTileMap, map);
-      }
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
