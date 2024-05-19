@@ -23,15 +23,28 @@ export default function Tile(props: I_tileProps) {
     tempClassName,
   } = props;
 
+  const buttonColor = {
+    color: BUTTON_VALUE_COLORSET[value!],
+  };
+
   return (
     <button
       className={`tile ${tempClassName} ${openStatus === "O" ? "opened" : ""}`}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
       onMouseLeave={onMouseLeave}
-      style={style}
+      style={{ ...style, ...buttonColor }}
     >
       {openStatus === "C" ? "" : openStatus === "F" ? FLAG : value}
     </button>
   );
 }
+
+const BUTTON_VALUE_COLORSET: { [key: string | number]: string } = {
+  1: "blue",
+  2: "green",
+  3: "red",
+  4: "deepBlue",
+  5: "brown",
+  6: "pink",
+};
