@@ -29,7 +29,9 @@ export default function Tile(props: I_tileProps) {
 
   return (
     <button
-      className={`tile ${tempClassName} ${openStatus === "O" ? "opened" : ""}`}
+      className={`tile pacifico-regular ${tempClassName} ${
+        openStatus === "O" ? "opened" : ""
+      }`}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
       onMouseLeave={onMouseLeave}
