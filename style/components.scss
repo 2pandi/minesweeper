@@ -1,5 +1,16 @@
 @import "./variables.scss";
-@import url("https://fonts.googleapis.com/css2?family=Jaro:opsz@6..72&family=Pacifico&display=swap");
+// @import url("https://fonts.googleapis.com/css2?family=Jaro:opsz@6..72&family=Pacifico&display=swap");
+
+@font-face {
+  font-family: "Jaro";
+  src: url("/public/fonts/Jaro-Regular-VariableFont_opsz.ttf")
+    format("truetype");
+}
+
+@font-face {
+  font-family: "Pacifico";
+  src: url("/public/fonts/Pacifico-Regular.ttf");
+}
 
 // page
 .home {
