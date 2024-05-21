@@ -51,14 +51,14 @@ export default function TileBox() {
           break;
         case "C":
           if (isMapSet && map[y][x] === undefined)
-            bangTile(x, y, newOpenTileMap, map, lose, win);
+            bangTile(x, y, newOpenTileMap, map, lose, win, setBombedPoint);
           newOpenTileMap[y][x] = "O";
 
           break;
         case "O":
           const totalFlag = countFlagAroundTile(x, y, openTileMap);
           if (totalFlag >= (map[y][x] as number))
-            bangTile(x, y, newOpenTileMap, map, lose, win);
+            bangTile(x, y, newOpenTileMap, map, lose, win, setBombedPoint);
           break;
         default:
       }
@@ -87,7 +87,7 @@ export default function TileBox() {
           flagsAroundTile >= (map[y][x] as number) ||
           (isMapSet && !map[y][x])
         )
-          bangTile(x, y, newOpenTileMap, map, lose, win);
+          bangTile(x, y, newOpenTileMap, map, lose, win, setBombedPoint);
 
         break;
       default:
@@ -107,7 +107,7 @@ export default function TileBox() {
 
       if (status === "P" && mode === "B") {
         if (map[y][x] === undefined && isMapSet && openTileMap[y][x] !== "F")
-          bangTile(x, y, openTileMap, map, lose, win);
+          bangTile(x, y, openTileMap, map, lose, win, setBombedPoint);
         openTile(x, y);
       }
     }
@@ -223,7 +223,8 @@ export default function TileBox() {
           openTileMap,
           map,
           lose,
-          win
+          win,
+          setBombedPoint
         );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
