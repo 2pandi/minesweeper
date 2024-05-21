@@ -3,6 +3,7 @@
 import React from "react";
 import { FLAG, TILE_STATUS } from "@/constants";
 import { T_mapTile } from "@/interface";
+import { useGameStore } from "@/zustand/gameStore";
 
 interface I_tileProps extends React.HTMLAttributes<HTMLButtonElement> {
   openStatus: keyof typeof TILE_STATUS;
@@ -23,6 +24,8 @@ export default function Tile(props: I_tileProps) {
     tempClassName,
   } = props;
 
+  const { status } = useGameStore();
+
   const buttonColor = {
     color: BUTTON_VALUE_COLORSET[value!],
   };
@@ -30,14 +33,20 @@ export default function Tile(props: I_tileProps) {
   return (
     <button
       className={`tile pacifico-regular ${tempClassName} ${
-        openStatus === "O" ? "opened" : ""
+        openStatus === "O" || (status === "L" && openStatus !== "F")
+          ? "opened"
+          : ""
       }`}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
       onMouseLeave={onMouseLeave}
       style={{ ...style, ...buttonColor }}
     >
-      {openStatus === "C" ? "" : openStatus === "F" ? FLAG : value}
+      {openStatus === "C" && status !== "L"
+        ? ""
+        : openStatus === "F"
+        ? FLAG
+        : value}
     </button>
   );
 }
@@ -48,5 +57,5 @@ const BUTTON_VALUE_COLORSET: { [key: string | number]: string } = {
   3: "red",
   4: "deepBlue",
   5: "brown",
-  6: "pink",
+  6: "#ff899d",
 };

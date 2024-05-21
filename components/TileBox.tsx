@@ -26,6 +26,8 @@ export default function TileBox() {
     setOpenTileMap,
     startingPoint,
     setStartingPoint,
+    bombedPoint,
+    setBombedPoint,
   } = useGameStore();
 
   const [isLongClick, setIsLongClick] = React.useState(false);
@@ -39,7 +41,10 @@ export default function TileBox() {
       const newOpenTileMap = openTileMap.map((line) => line.map((v) => v));
       if (status === "L") return;
 
-      if (map[y][x] === BOMB) lose();
+      if (map[y][x] === BOMB) {
+        setBombedPoint([x, y]);
+        lose();
+      }
 
       switch (newOpenTileMap[y][x]) {
         case "F":
@@ -244,7 +249,13 @@ export default function TileBox() {
               onMouseDown={() => mouseDownHandler(xI, yI)}
               onMouseUp={() => mouseUpHandler(xI, yI)}
               onMouseLeave={mouseLeaveHandler}
-              tempClassName={checkTempClassTile([xI, yI]) ? "opened" : ""}
+              tempClassName={
+                checkTempClassTile([xI, yI])
+                  ? "opened"
+                  : bombedPoint[0] === xI && bombedPoint[1] === yI
+                  ? "bombed"
+                  : ""
+              }
               style={{
                 width: `calc(400px / ${mapXLen})`,
                 height: `calc(600px / ${mapYLen})`,

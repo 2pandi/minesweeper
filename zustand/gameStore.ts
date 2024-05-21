@@ -35,6 +35,9 @@ interface I_gameState {
 
   startingPoint: [number, number];
   setStartingPoint: (point: I_gameState["startingPoint"]) => void;
+
+  bombedPoint: I_gameState["startingPoint"];
+  setBombedPoint: (point: I_gameState["startingPoint"]) => void;
 }
 
 const defaultMap = Array.from({
@@ -64,6 +67,7 @@ export const useGameStore = create<I_gameState>()((set) => ({
         ) as undefined[][]
       ).map((line) => line.map(() => "C")),
       startingPoint: [-1, -1],
+      bombedPoint: [-1, -1],
       isMapSet: false,
     })),
 
@@ -85,4 +89,7 @@ export const useGameStore = create<I_gameState>()((set) => ({
 
   startingPoint: [-1, -1],
   setStartingPoint: (point) => set({ startingPoint: point }),
+
+  bombedPoint: [-1, -1],
+  setBombedPoint: (point) => set({ bombedPoint: point }),
 }));
