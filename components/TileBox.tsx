@@ -250,7 +250,7 @@ export default function TileBox() {
                 height: `calc(600px / ${mapYLen})`,
               }}
               key={`y${yI}x${xI}`}
-            ></Tile>
+            />
           ))}
         </div>
       ))}
