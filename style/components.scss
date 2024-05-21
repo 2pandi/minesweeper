@@ -116,4 +116,24 @@
   &.bombed {
     background-color: red;
   }
+
+  .x_line {
+    position: absolute;
+
+    .x_line1 {
+      width: 1.5em;
+      height: 1px;
+      background-color: black;
+      transform: rotate(-45deg);
+      z-index: 99;
+    }
+
+    .x_line2 {
+      width: 1.5em;
+      height: 1px;
+      background-color: black;
+      transform: rotate(45deg);
+      z-index: 99;
+    }
+  }
 }

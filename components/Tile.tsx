@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { FLAG, TILE_STATUS } from "@/constants";
+import { BOMB, FLAG, TILE_STATUS } from "@/constants";
 import { T_mapTile } from "@/interface";
 import { useGameStore } from "@/zustand/gameStore";
 
@@ -47,6 +47,14 @@ export default function Tile(props: I_tileProps) {
         : openStatus === "F"
         ? FLAG
         : value}
+      <div
+        className={
+          openStatus === "F" && value !== BOMB && status === "L" ? "x_line" : ""
+        }
+      >
+        <div className="x_line1"></div>
+        <div className="x_line2"></div>
+      </div>
     </button>
   );
 }
