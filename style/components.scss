@@ -2,12 +2,12 @@
 
 @font-face {
   font-family: "Jaro";
-  src: url("/public//fonts/Jaro-Regular-VariableFont_opsz.ttf");
+  src: url("/fonts/Jaro-Regular-VariableFont_opsz.ttf") format("woff");
 }
 
 @font-face {
   font-family: "Pacifico";
-  src: url("/public/fonts/Pacifico-Regular.ttf");
+  src: url("/fonts/Pacifico-Regular.ttf") format("woff");
 }
 
 @import "./variables.scss";
