@@ -1,4 +1,4 @@
-import { BOMB, GAME_MODE } from "@/constants";
+import { BOMB } from "@/constants";
 import { T_mapTile, T_openMapTile } from "@/interface";
 
 const placeBomb = (
@@ -6,10 +6,9 @@ const placeBomb = (
   totalBomb: number,
   maxX: number,
   maxY: number,
-  startingPoint: [number, number],
-  mode: keyof typeof GAME_MODE
+  startingPoint: [number, number]
 ) => {
-  const [startX, startY] = startingPoint;
+  let [startX, startY] = startingPoint;
   let leftBomb = totalBomb;
 
   while (leftBomb) {
@@ -90,10 +89,9 @@ export const makeMap = (
   startingPoint: [number, number],
   x: number,
   y: number,
-  totalBomb: number,
-  mode: keyof typeof GAME_MODE
+  totalBomb: number
 ) => {
-  const newMap = placeBomb(map, totalBomb, x, y, startingPoint, mode);
+  const newMap = placeBomb(map, totalBomb, x, y, startingPoint);
 
   return placeNumber(newMap);
 };
@@ -105,53 +103,6 @@ export const isAllTileOpen = (openTileMap: T_openMapTile[][]) => {
     }
   }
   return true;
-};
-
-export const bangTile = (
-  x: number,
-  y: number,
-  openTileMap: T_openMapTile[][],
-  map: T_mapTile[][],
-  lose: () => void,
-  win: () => void,
-  setBombedPoint: (point: [number, number]) => void
-) => {
-  const directions = [
-    { dx: 0, dy: -1 }, // 위
-    { dx: 0, dy: 1 }, // 아래
-    { dx: -1, dy: 0 }, // 왼쪽
-    { dx: 1, dy: 0 }, // 오른쪽
-    { dx: -1, dy: -1 }, // 왼쪽 위
-    { dx: -1, dy: 1 }, // 왼쪽 아래
-    { dx: 1, dy: -1 }, // 오른쪽 위
-    { dx: 1, dy: 1 }, // 오른쪽 아래
-  ];
-
-  const isValidPosition = (x: number, y: number) =>
-    x >= 0 && y >= 0 && x < map[0].length && y < map.length;
-
-  const processBang = (dx: number, dy: number) => {
-    let newX = x + dx;
-    let newY = y + dy;
-
-    while (isValidPosition(newX, newY)) {
-      if (openTileMap[newY][newX] === "O" || openTileMap[newY][newX] === "F")
-        break;
-      openTileMap[newY][newX] = "O";
-      if (map[newY][newX] === BOMB) {
-        setBombedPoint([newX, newY]);
-        return lose();
-      }
-      if (map[newY][newX]) break;
-      bangTile(newX, newY, openTileMap, map, lose, win, setBombedPoint);
-      newX += dx;
-      newY += dy;
-    }
-  };
-
-  directions.forEach(({ dx, dy }) => processBang(dx, dy));
-
-  if (isAllTileOpen(openTileMap)) return win();
 };
 
 export const countFlagAroundTile = (
