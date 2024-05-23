@@ -1,11 +1,11 @@
 @font-face {
   font-family: "Jaro";
-  src: url("/fonts/Jaro-subset.ttf") format("woff");
+  src: url("/fonts/Jaro-subset.woff") format("woff");
 }
 
 @font-face {
   font-family: "Pacifico";
-  src: url("/fonts/pacifico-subset.ttf") format("woff");
+  src: url("/fonts/pacifico-subset.woff") format("woff");
 }
 
 @import "./variables.scss";
