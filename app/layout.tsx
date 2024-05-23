@@ -11,7 +11,7 @@ const myLocalFont = localFont({
     { path: "../public/fonts/jaro-subset.woff" },
     { path: "../public/fonts/pacifico-subset.woff" },
   ],
-  display: "swap",
+  display: "block",
 });
 
 export const metadata: Metadata = {
@@ -25,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={myLocalFont.className}>
+    <html lang="ko" className={myLocalFont.className}>
       <body className={inter.className}>{children}</body>
     </html>
   );
