@@ -13,7 +13,6 @@ export default function TileBox() {
     mapYLen,
     start,
     lose,
-    win,
     mode,
     flaggableBomb,
     flagBomb,
