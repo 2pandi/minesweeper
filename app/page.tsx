@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import Container from "@/components/Container";
 import StatusBar from "@/components/StatusBar";
