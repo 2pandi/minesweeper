@@ -1,21 +1,11 @@
 import React from "react";
 import Modal from "./Modal";
-import { useGameStore } from "@/zustand/gameStore";
-import { useModalStore } from "@/zustand/modalStore";
+import useWin from "@/hooks/useWin";
 
 interface I_containerProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export default function Container(props: I_containerProps) {
-  const { status } = useGameStore();
-  const { setText, setIsOpen } = useModalStore();
-
-  React.useEffect(() => {
-    if (status === "WIN") {
-      setText("You win!");
-      setIsOpen(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status]);
+  useWin();
 
   return (
     <React.Fragment>

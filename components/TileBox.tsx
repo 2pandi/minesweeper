@@ -9,6 +9,7 @@ import useSetMap from "@/hooks/useSetMap";
 import useOpenTile from "@/hooks/useOpenTile";
 import useStandFlag from "@/hooks/useStandFlag";
 import useTempTileClass from "@/hooks/useTempTileClass";
+import useStart from "@/hooks/useStart";
 
 export default function TileBox() {
   const {
@@ -37,16 +38,14 @@ export default function TileBox() {
   const { getTempClassTiles } = useTempTileClass();
 
   const clickTileHandler = (x: number, y: number) => {
-    if (status !== "WIN" && status !== "LOSE") {
-      if (status === "READY") {
-        start();
-        if (mode === "BOMB_MODE") setStartingPoint([x, y]);
-      }
+    if (status === "WIN" || status === "LOSE") return;
 
-      if (mode === "FLAG_MODE" && openTileMap[y][x]) standFlag(x, y);
-
-      if (status === "PLAYING" && mode === "BOMB_MODE") openTile(x, y);
+    if (status === "READY") {
+      start();
+      if (mode === "BOMB_MODE") setStartingPoint([x, y]);
     }
+    if (mode === "FLAG_MODE" && openTileMap[y][x]) standFlag(x, y);
+    if (status === "PLAYING" && mode === "BOMB_MODE") openTile(x, y);
   };
 
   const mouseDownHandler = (x: number, y: number) => {
@@ -92,6 +91,9 @@ export default function TileBox() {
     }
     setIsLongClick(false);
   };
+
+  // localStorage
+  useStart();
 
   // starting point 설정후 map setting
   useSetMap();
