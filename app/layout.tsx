@@ -26,6 +26,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko" className={myLocalFont.className}>
+      <head>
+        <link rel="preload" href="url" as="font" type="font/woff2" />
+      </head>
       <body className={inter.className}>{children}</body>
     </html>
   );
