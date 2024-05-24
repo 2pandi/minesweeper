@@ -99,7 +99,7 @@ export const makeMap = (
 export const isAllTileOpen = (openTileMap: T_openMapTile[][]) => {
   for (let i = 0; i < openTileMap.length; i++) {
     for (let j = 0; j < openTileMap[0].length; j++) {
-      if (openTileMap[i][j] === "C") return false;
+      if (openTileMap[i][j] === "CONCEALED") return false;
     }
   }
   return true;
@@ -132,5 +132,5 @@ export const countFlagAroundTile = (
 
   if (x + 1 < openTileMap[0].length) tiles.push(openTileMap[y][x + 1]);
 
-  return tiles.filter((v) => v === "F").length;
+  return tiles.filter((v) => v === "FLAGGED").length;
 };

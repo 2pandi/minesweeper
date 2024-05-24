@@ -20,15 +20,15 @@ export default function Timer() {
   }, delay);
 
   React.useEffect(() => {
-    if (status === "P" && minute === 0 && second === 0) setDelay(1000);
+    if (status === "PLAYING" && minute === 0 && second === 0) setDelay(1000);
 
-    if (status === "R") {
+    if (status === "READY") {
       setDelay(0);
       setMinute(0);
       setSecond(0);
     }
 
-    if (status !== "P" || (minute === 99 && second === 59)) setDelay(0);
+    if (status !== "PLAYING" || (minute === 99 && second === 59)) setDelay(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 

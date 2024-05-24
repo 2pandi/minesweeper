@@ -1,28 +1,28 @@
-export const GAME_STATUS = {
-  R: "READY",
-  P: "PLAYING",
-  W: "WIN",
-  L: "LOSE",
-} as const;
+export enum GAME_STATUS {
+  READY,
+  PLAYING,
+  WIN,
+  LOSE,
+}
 
-export const GAME_MODE = {
-  B: "BOMB_MODE",
-  F: "FLAG_MODE",
-} as const;
+export enum GAME_MODE {
+  BOMB_MODE,
+  FLAG_MODE,
+}
 
-export const TILE_STATUS = {
-  C: "CONCEALED",
-  N: "NUMBERED",
-  F: "FLAGGED",
-  B: "BOOMED",
-  O: "OPENED",
-} as const;
+export enum TILE_STATUS {
+  CONCEALED,
+  NUMBERED,
+  FLAGGED,
+  BOOMED,
+  OPENED,
+}
 
-export const TILE_TYPE = {
-  B: "BOMB",
-  N: "NUMBER",
-  E: "EMPTY",
-} as const;
+export enum TILE_TYPE {
+  BOMB,
+  NUMBER,
+  EMPTY,
+}
 
 export const BOMB = "💣";
 export const FLAG = "🚩";

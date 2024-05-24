@@ -41,7 +41,7 @@ export default function TileBox() {
   const openTile = (x: number, y: number) => {
     if (isMapSet) {
       const newOpenTileMap = openTileMap.map((line) => line.map((v) => v));
-      if (status === "L") return;
+      if (status === "LOSE") return;
 
       if (map[y][x] === BOMB) {
         setBombedPoint([x, y]);
@@ -49,15 +49,15 @@ export default function TileBox() {
       }
 
       switch (newOpenTileMap[y][x]) {
-        case "F":
+        case "FLAGGED":
           break;
-        case "C":
+        case "CONCEALED":
           if (isMapSet && map[y][x] === undefined)
             boomTile(x, y, newOpenTileMap);
-          newOpenTileMap[y][x] = "O";
+          newOpenTileMap[y][x] = "OPENED";
 
           break;
-        case "O":
+        case "OPENED":
           const totalFlag = countFlagAroundTile(x, y, openTileMap);
           if (totalFlag >= (map[y][x] as number))
             boomTile(x, y, newOpenTileMap);
@@ -73,17 +73,17 @@ export default function TileBox() {
     const newOpenTileMap = openTileMap.map((line) => line.map((v) => v));
 
     switch (newOpenTileMap[y][x]) {
-      case "F":
-        newOpenTileMap[y][x] = "C";
+      case "FLAGGED":
+        newOpenTileMap[y][x] = "CONCEALED";
         deflagBomb();
         break;
-      case "C":
+      case "CONCEALED":
         if (flaggableBomb > 0) {
-          newOpenTileMap[y][x] = "F";
+          newOpenTileMap[y][x] = "FLAGGED";
           flagBomb();
         }
         break;
-      case "O":
+      case "OPENED":
         const flagsAroundTile = countFlagAroundTile(x, y, openTileMap);
         if (flagsAroundTile >= (map[y][x] as number) && isMapSet) {
           return openTile(x, y);
@@ -97,15 +97,15 @@ export default function TileBox() {
   };
 
   const clickTileHandler = (x: number, y: number) => {
-    if (status !== "W" && status !== "L") {
-      if (status === "R") {
+    if (status !== "WIN" && status !== "LOSE") {
+      if (status === "READY") {
         start();
-        if (mode === "B") setStartingPoint([x, y]);
+        if (mode === "BOMB_MODE") setStartingPoint([x, y]);
       }
 
-      if (mode === "F" && openTileMap[y][x]) standFlag(x, y);
+      if (mode === "FLAG_MODE" && openTileMap[y][x]) standFlag(x, y);
 
-      if (status === "P" && mode === "B") openTile(x, y);
+      if (status === "PLAYING" && mode === "BOMB_MODE") openTile(x, y);
     }
   };
 
@@ -137,7 +137,10 @@ export default function TileBox() {
         const newX = x + dx;
         const newY = y + dy;
 
-        if (isValidPosition(newX, newY) && openTileMap[newY][newX] !== "F")
+        if (
+          isValidPosition(newX, newY) &&
+          openTileMap[newY][newX] !== "FLAGGED"
+        )
           newTempClassTiles.push([newX, newY]);
       });
 
@@ -147,9 +150,9 @@ export default function TileBox() {
 
   const mouseDownHandler = (x: number, y: number) => {
     if (
-      openTileMap[y][x] === "O" &&
+      openTileMap[y][x] === "OPENED" &&
       typeof map[y][x] === "number" &&
-      status === "P"
+      status === "PLAYING"
     )
       tempTileClassSetter(x, y);
 
@@ -157,12 +160,12 @@ export default function TileBox() {
       setIsLongClick(true);
 
       switch (mode) {
-        case "B":
-          if (status === "R") start();
+        case "BOMB_MODE":
+          if (status === "READY") start();
           standFlag(x, y);
           break;
-        case "F":
-          if (status === "R") {
+        case "FLAG_MODE":
+          if (status === "READY") {
             start();
             setStartingPoint([x, y]);
           }
@@ -191,13 +194,18 @@ export default function TileBox() {
 
   // starting point 설정후 map setting
   React.useEffect(() => {
-    if (status === "P" && (startingPoint[0] >= 0 || mode === "F")) {
+    if (
+      status === "PLAYING" &&
+      (startingPoint[0] >= 0 || mode === "FLAG_MODE")
+    ) {
       const newMap = makeMap(
         map,
         startingPoint,
         mapXLen,
         mapYLen,
-        mode === "F" && startingPoint[0] < 0 ? flaggableBomb + 1 : flaggableBomb
+        mode === "FLAG_MODE" && startingPoint[0] < 0
+          ? flaggableBomb + 1
+          : flaggableBomb
       );
       setMap(newMap);
       setIsMapSet(true);
@@ -210,7 +218,8 @@ export default function TileBox() {
     if (isMapSet) {
       if (
         startingPoint[0] >= 0 &&
-        (mode === "B" || (mode === "F" && flaggableBomb === TOTAL_BOMB))
+        (mode === "BOMB_MODE" ||
+          (mode === "FLAG_MODE" && flaggableBomb === TOTAL_BOMB))
       )
         openTile(startingPoint[0], startingPoint[1]);
     }

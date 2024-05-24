@@ -48,13 +48,13 @@ export const useGameStore = create<I_gameState>()((set) => ({
   mapXLen: MAP_X_LENGTH,
   mapYLen: MAP_Y_LENGTH,
 
-  status: "R",
-  start: () => set(() => ({ status: "P" })),
-  lose: () => set(() => ({ status: "L" })),
-  win: () => set(() => ({ status: "W" })),
+  status: "READY",
+  start: () => set(() => ({ status: "PLAYING" })),
+  lose: () => set(() => ({ status: "LOSE" })),
+  win: () => set(() => ({ status: "WIN" })),
   restart: () =>
     set(() => ({
-      status: "R",
+      status: "READY",
       flaggableBomb: TOTAL_BOMB,
       map: Array.from({
         length: 20,
@@ -65,14 +65,15 @@ export const useGameStore = create<I_gameState>()((set) => ({
         }).map(() =>
           Array.from({ length: 13 }).fill(undefined)
         ) as undefined[][]
-      ).map((line) => line.map(() => "C")),
+      ).map((line) => line.map(() => "CONCEALED")),
       startingPoint: [-1, -1],
       bombedPoint: [-1, -1],
       isMapSet: false,
     })),
 
-  mode: "B",
-  changeMode: (state) => set({ mode: state === "B" ? "F" : "B" }),
+  mode: "BOMB_MODE",
+  changeMode: (state) =>
+    set({ mode: state === "BOMB_MODE" ? "FLAG_MODE" : "BOMB_MODE" }),
 
   flaggableBomb: TOTAL_BOMB,
   flagBomb: () => set((state) => ({ flaggableBomb: state.flaggableBomb - 1 })),
@@ -84,7 +85,7 @@ export const useGameStore = create<I_gameState>()((set) => ({
   isMapSet: false,
   setIsMapSet: (state) => set({ isMapSet: state }),
 
-  openTileMap: defaultMap.map((line) => line.map(() => "C")),
+  openTileMap: defaultMap.map((line) => line.map(() => "CONCEALED")),
   setOpenTileMap: (newMap) => set({ openTileMap: newMap }),
 
   startingPoint: [-1, -1],

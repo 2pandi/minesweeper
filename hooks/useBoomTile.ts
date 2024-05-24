@@ -48,12 +48,12 @@ export default function useBoomTile() {
 
       while (isValidPosition(newX, newY)) {
         if (
-          newOpenTileMap[newY][newX] === "O" ||
-          newOpenTileMap[newY][newX] === "F"
+          newOpenTileMap[newY][newX] === "OPENED" ||
+          newOpenTileMap[newY][newX] === "FLAGGED"
         )
           break;
 
-        newOpenTileMap[newY][newX] = "O";
+        newOpenTileMap[newY][newX] = "OPENED";
 
         if (map[newY][newX] === BOMB) {
           setBombedPoint([newX, newY]);

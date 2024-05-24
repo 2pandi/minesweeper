@@ -10,7 +10,7 @@ export default function Container(props: I_containerProps) {
   const { setText, setIsOpen } = useModalStore();
 
   React.useEffect(() => {
-    if (status === "W") {
+    if (status === "WIN") {
       setText("You win!");
       setIsOpen(true);
     }

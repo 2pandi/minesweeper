@@ -1,8 +1,8 @@
 "use client";
 
+import React from "react";
 import { BOMB, FLAG } from "@/constants";
 import { useGameStore } from "@/zustand/gameStore";
-import React from "react";
 import Timer from "./Timer";
 
 export default function StatusBar() {
@@ -17,11 +17,11 @@ export default function StatusBar() {
           </div>
         </div>
         <div onClick={() => restart()} className="mid">
-          {status === "W" ? "😎" : status === "L" ? "😵" : "🙂"}
+          {status === "WIN" ? "😎" : status === "LOSE" ? "😵" : "🙂"}
         </div>
         <div className="right">
           <button onClick={() => changeMode(mode)} className="mode_switch">
-            {mode === "B" ? BOMB : FLAG}
+            {mode === "BOMB_MODE" ? BOMB : FLAG}
           </button>
           <Timer />
         </div>
