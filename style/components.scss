@@ -1,16 +1,16 @@
 @font-face {
   font-family: "Jaro";
-  src: url("/fonts/jaro-subset.woff") format("woff");
+  src: url("../app/fonts/jaro-subset.woff") format("woff");
 }
 
 @font-face {
   font-family: "Pacifico";
-  src: url("/fonts/pacifico-subset.woff") format("woff");
+  src: url("../app/fonts/pacifico-subset.woff") format("woff");
 }
 
 @font-face {
   font-family: "DungGeunMo";
-  src: url("/fonts/dunggeunmo-subset.woff") format("woff");
+  src: url("../app/fonts/dunggeunmo-subset.woff") format("woff");
 }
 
 @import "./variables.scss";

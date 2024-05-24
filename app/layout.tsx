@@ -1,17 +1,15 @@
 import localFont from "next/font/local";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "@/style/global.scss";
 import "@/style/components.scss";
 
-const inter = Inter({ subsets: ["latin"] });
-
 const myLocalFont = localFont({
   src: [
-    { path: "../public/fonts/jaro-subset.woff" },
-    { path: "../public/fonts/pacifico-subset.woff" },
+    { path: "./fonts/jaro-subset.woff" },
+    { path: "./fonts/pacifico-subset.woff" },
+    { path: "./fonts/dunggeunmo-subset.woff" },
   ],
-  display: "block",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -27,9 +25,9 @@ export default function RootLayout({
   return (
     <html lang="ko" className={myLocalFont.className}>
       <head>
-        <link rel="preload" href="url" as="font" type="font/woff2" />
+        <link rel="preload" href="/" as="font" type="font/woff2" />
       </head>
-      <body className={inter.className}>{children}</body>
+      <body>{children}</body>
     </html>
   );
 }
