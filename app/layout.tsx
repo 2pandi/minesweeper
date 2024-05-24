@@ -1,17 +1,6 @@
-import localFont from "next/font/local";
 import type { Metadata } from "next";
 import "@/style/global.scss";
 import "@/style/components.scss";
-
-const myLocalFont = localFont({
-  src: [
-    { path: "./fonts/jaro-subset.woff" },
-    { path: "./fonts/pacifico-subset.woff" },
-    { path: "./fonts/dunggeunmo-subset.woff" },
-  ],
-  display: "block",
-  adjustFontFallback: false,
-});
 
 export const metadata: Metadata = {
   title: "Minesweeper",
@@ -24,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko" className={myLocalFont.className}>
+    <html lang="ko">
       <head>
         <link rel="preload" href="/" as="font" type="font/woff2" />
       </head>

@@ -22,7 +22,9 @@ export default function Modal() {
             <div className="inner">
               <div className="text">{text}</div>
               <button className="button" onClick={() => setIsOpen(false)}>
-                <div className="button_inline">OK</div>
+                <div className={`${dunggeunmo.className} button_inline`}>
+                  OK
+                </div>
               </button>
             </div>
           </div>
