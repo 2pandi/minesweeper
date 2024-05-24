@@ -5,6 +5,7 @@ import { BEST_RECORD, BOMB, FLAG, TOTAL_GAMES, WIN_GAMES } from "@/constants";
 import { useGameStore } from "@/zustand/gameStore";
 import Timer from "./Timer";
 import { useModalStore } from "@/zustand/modalStore";
+import { jaro } from "@/util/fonts";
 
 export default function StatusBar() {
   const { flaggableBomb, mode, changeMode, restart, status } = useGameStore();
@@ -28,7 +29,7 @@ Best Record: ${bestRecord}
   return (
     <React.Fragment>
       <div className="status_bar_container">
-        <div className="left jaro-font">
+        <div className={`${jaro.className} left`}>
           <div className="flaggable_bomb_counter">
             {String(flaggableBomb).padStart(3, "0")}
           </div>

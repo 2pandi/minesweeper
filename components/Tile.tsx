@@ -4,6 +4,7 @@ import React from "react";
 import { BOMB, FLAG, TILE_STATUS } from "@/constants";
 import { T_mapTile } from "@/interface";
 import { useGameStore } from "@/zustand/gameStore";
+import { pacifico } from "@/util/fonts";
 
 interface I_tileProps extends React.HTMLAttributes<HTMLButtonElement> {
   openStatus: keyof typeof TILE_STATUS;
@@ -32,7 +33,7 @@ export default function Tile(props: I_tileProps) {
 
   return (
     <button
-      className={`tile pacifico-regular ${tempClassName} ${
+      className={`${pacifico.className} tile ${tempClassName} ${
         openStatus === "OPENED" ||
         (status === "LOSE" && openStatus !== "FLAGGED")
           ? "opened"

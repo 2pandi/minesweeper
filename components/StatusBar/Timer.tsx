@@ -4,6 +4,7 @@ import React from "react";
 import { useGameStore } from "@/zustand/gameStore";
 import useInterval from "@/hooks/useInterval";
 import { BEST_RECORD } from "@/constants";
+import { jaro } from "@/util/fonts";
 
 export default function Timer() {
   const [minute, setMinute] = React.useState<number>(0);
@@ -58,7 +59,7 @@ export default function Timer() {
   }, [status]);
 
   return (
-    <div className="timer jaro-font">{`${String(minute).padStart(
+    <div className={`${jaro.className} timer`}>{`${String(minute).padStart(
       2,
       "0"
     )}:${String(second).padStart(2, "0")}`}</div>

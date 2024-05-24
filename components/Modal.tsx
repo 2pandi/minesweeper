@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useModalStore } from "@/zustand/modalStore";
+import { dunggeunmo } from "@/util/fonts";
 
 export default function Modal() {
   const { isOpen, setIsOpen, text } = useModalStore();
@@ -9,7 +10,7 @@ export default function Modal() {
   return (
     <React.Fragment>
       {isOpen ? (
-        <div className="modal">
+        <div className={`${dunggeunmo.className} modal`}>
           <div className="dim" />
           <div className="dialog">
             <div className="header">
