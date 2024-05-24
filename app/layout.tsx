@@ -9,7 +9,8 @@ const myLocalFont = localFont({
     { path: "./fonts/pacifico-subset.woff" },
     { path: "./fonts/dunggeunmo-subset.woff" },
   ],
-  display: "swap",
+  display: "block",
+  adjustFontFallback: false,
 });
 
 export const metadata: Metadata = {
