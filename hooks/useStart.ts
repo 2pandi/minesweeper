@@ -7,7 +7,6 @@ export default function useStart() {
 
   React.useEffect(() => {
     if (status === "PLAYING") {
-      console.log("run");
       const totalGames = localStorage.getItem(TOTAL_GAMES) || 0;
       localStorage.setItem(TOTAL_GAMES, String(+totalGames + 1));
     }

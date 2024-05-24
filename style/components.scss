@@ -8,6 +8,11 @@
   src: url("/fonts/pacifico-subset.woff") format("woff");
 }
 
+@font-face {
+  font-family: "DungGeunMo";
+  src: url("/fonts/dunggeunmo-subset.woff") format("woff");
+}
+
 @import "./variables.scss";
 
 // page
@@ -153,6 +158,7 @@
 }
 
 .modal {
+  font-family: "DungGeunMo";
   position: absolute;
   top: 0;
   left: 0;
@@ -223,14 +229,15 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+
       .text {
         width: 100%;
         height: 100%;
         font-size: 0.9em;
         display: flex;
         align-items: center;
-        margin-left: 1.2em;
         white-space: pre-wrap;
+        margin-left: 1.5em;
         line-height: 0.5em;
       }
 
@@ -238,6 +245,7 @@
         align-self: center;
         width: 70%;
         height: 3.5em;
+        font-family: "DungGeunMo";
         font-size: 0.8em;
         background-color: #cdc9c0;
         box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #fff,

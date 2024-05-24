@@ -8,7 +8,7 @@ export default function useWin() {
 
   React.useEffect(() => {
     if (status === "WIN") {
-      setText("You win!");
+      setText(`You win!`);
       setIsOpen(true);
       const winGames = localStorage.getItem("winGames") || 0;
       localStorage.setItem("winGames", String(+winGames + 1));

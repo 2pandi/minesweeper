@@ -15,10 +15,12 @@ export default function StatusBar() {
     const winGames = localStorage.getItem(WIN_GAMES) || 0;
     const bestRecord = localStorage.getItem(BEST_RECORD) || "none";
     setText(`
-    Total Games: ${totalGames}\n
-    Win Games: ${winGames}\n
-    Winning Rate: ${((+winGames / +totalGames) * 100).toFixed(1)}%\n
-    Best Record: ${bestRecord}
+Total Games: ${totalGames}\n
+Win Games: ${winGames}\n
+Winning Rate: ${
+      totalGames ? ((+winGames / +totalGames) * 100).toFixed(1) : 0
+    }%\n
+Best Record: ${bestRecord}
     `);
     setIsOpen(true);
   };
