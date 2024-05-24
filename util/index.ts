@@ -134,3 +134,10 @@ export const countFlagAroundTile = (
 
   return tiles.filter((v) => v === "FLAGGED").length;
 };
+
+export const checkTempClassTile: (
+  tempClassTiles: [number, number][],
+  [x, y]: [number, number]
+) => boolean = (tempClassTiles, [x, y]) => {
+  return tempClassTiles?.findIndex((v) => v[0] === x && v[1] === y) >= 0;
+};
