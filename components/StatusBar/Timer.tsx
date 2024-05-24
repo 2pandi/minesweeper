@@ -3,6 +3,7 @@
 import React from "react";
 import { useGameStore } from "@/zustand/gameStore";
 import useInterval from "@/hooks/useInterval";
+import { BEST_RECORD } from "@/constants";
 
 export default function Timer() {
   const [minute, setMinute] = React.useState<number>(0);
@@ -29,6 +30,30 @@ export default function Timer() {
     }
 
     if (status !== "PLAYING" || (minute === 99 && second === 59)) setDelay(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status]);
+
+  React.useEffect(() => {
+    if (status === "WIN") {
+      const bestRecord = localStorage.getItem(BEST_RECORD);
+      if (!bestRecord)
+        return localStorage.setItem(
+          BEST_RECORD,
+          `${String(minute).padStart(2, "0")}:${String(second).padStart(
+            2,
+            "0"
+          )}`
+        );
+      const [rMinute, rSecond] = bestRecord.split(":");
+      if (+rMinute > minute || (+rMinute === minute && +rSecond > second))
+        localStorage.setItem(
+          BEST_RECORD,
+          `${String(minute).padStart(2, "0")}:${String(second).padStart(
+            2,
+            "0"
+          )}`
+        );
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 

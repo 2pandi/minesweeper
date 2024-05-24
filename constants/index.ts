@@ -34,3 +34,4 @@ export const MAP_Y_LENGTH = 20;
 // localStorage
 export const TOTAL_GAMES = "totalGames";
 export const WIN_GAMES = "winGames";
+export const BEST_RECORD = "bestRecord";

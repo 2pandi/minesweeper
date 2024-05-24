@@ -18,10 +18,12 @@ export default function Modal() {
                 X
               </button>
             </div>
-            <div className="text">{text}</div>
-            <button className="button" onClick={() => setIsOpen(false)}>
-              <div className="button_inline">OK</div>
-            </button>
+            <div className="inner">
+              <div className="text">{text}</div>
+              <button className="button" onClick={() => setIsOpen(false)}>
+                <div className="button_inline">OK</div>
+              </button>
+            </div>
           </div>
         </div>
       ) : null}
