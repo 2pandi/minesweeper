@@ -35,3 +35,14 @@ export const MAP_Y_LENGTH = 20;
 export const TOTAL_GAMES = "totalGames";
 export const WIN_GAMES = "winGames";
 export const BEST_RECORD = "bestRecord";
+
+export const directions = [
+  [0, -1], // 위
+  [0, 1], // 아래
+  [1, 0], // 오른쪽
+  [-1, 0], // 왼쪽
+  [1, -1], // 오른쪽 위
+  [1, 1], // 오른쪽 아래
+  [-1, -1], // 왼쪽 위
+  [-1, 1], // 왼쪽 아래
+] as const;

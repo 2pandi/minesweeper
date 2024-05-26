@@ -1,4 +1,4 @@
-import { BOMB } from "@/constants";
+import { BOMB, directions } from "@/constants";
 import { T_openMapTile } from "@/interface";
 import { isAllTileOpen } from "@/util";
 import { useGameStore } from "@/zustand/gameStore";
@@ -28,17 +28,6 @@ export default function useBoomTile() {
     y: number,
     newOpenTileMap: T_openMapTile[][]
   ) => {
-    const directions = [
-      { dx: 0, dy: -1 }, // 위
-      { dx: 0, dy: 1 }, // 아래
-      { dx: -1, dy: 0 }, // 왼쪽
-      { dx: 1, dy: 0 }, // 오른쪽
-      { dx: -1, dy: -1 }, // 왼쪽 위
-      { dx: -1, dy: 1 }, // 왼쪽 아래
-      { dx: 1, dy: -1 }, // 오른쪽 위
-      { dx: 1, dy: 1 }, // 오른쪽 아래
-    ];
-
     const isValidPosition = (x: number, y: number) =>
       x >= 0 && y >= 0 && x < map[0].length && y < map.length;
 
@@ -68,7 +57,7 @@ export default function useBoomTile() {
       }
     };
 
-    directions.forEach(({ dx, dy }) => processBoom(dx, dy));
+    directions.forEach(([dx, dy]) => processBoom(dx, dy));
   };
 
   return { boomTile };

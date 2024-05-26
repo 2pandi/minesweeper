@@ -1,4 +1,4 @@
-import { BOMB } from "@/constants";
+import { BOMB, directions } from "@/constants";
 import { T_mapTile, T_openMapTile } from "@/interface";
 
 const placeBomb = (
@@ -31,7 +31,37 @@ const placeBomb = (
   return emptyMap;
 };
 
-const placeNumber = (bombMap: Array<Array<T_mapTile>>) => {
+const placeNumber = (
+  bombMap: Array<Array<T_mapTile>>
+): Array<Array<T_mapTile>> => {
+  for (let i = 0; i < bombMap.length; i++) {
+    for (let j = 0; j < bombMap[0].length; j++) {
+      if (bombMap[i][j] === BOMB) {
+        directions.forEach(([dx, dy]) => {
+          const ni = i + dx;
+          const nj = j + dy;
+
+          if (
+            ni >= 0 &&
+            ni < bombMap.length &&
+            nj >= 0 &&
+            nj < bombMap[0].length
+          ) {
+            if (bombMap[ni][nj] === undefined) {
+              bombMap[ni][nj] = 1;
+            } else if (typeof bombMap[ni][nj] === "number") {
+              (bombMap[ni][nj] as number)++;
+            }
+          }
+        });
+      }
+    }
+  }
+
+  return bombMap;
+};
+
+const placeNumber1 = (bombMap: Array<Array<T_mapTile>>) => {
   for (let i = 0; i < bombMap.length; i++) {
     for (let j = 0; j < bombMap[0].length; j++) {
       if (bombMap[i][j] === BOMB) {
@@ -109,30 +139,18 @@ export const countFlagAroundTile = (
   x: number,
   y: number,
   openTileMap: T_openMapTile[][]
-) => {
-  const tiles: T_openMapTile[] = [];
+): number => {
+  const isValid = (nx: number, ny: number): boolean =>
+    nx >= 0 && ny >= 0 && ny < openTileMap.length && nx < openTileMap[0].length;
 
-  if (y - 1 >= 0) {
-    tiles.push(openTileMap[y - 1][x]);
-
-    if (x - 1 >= 0) tiles.push(openTileMap[y - 1][x - 1]);
-
-    if (x + 1 < openTileMap[0].length) tiles.push(openTileMap[y - 1][x + 1]);
-  }
-
-  if (y + 1 < openTileMap.length) {
-    tiles.push(openTileMap[y + 1][x]);
-
-    if (x - 1 >= 0) tiles.push(openTileMap[y + 1][x - 1]);
-
-    if (x + 1 < openTileMap[0].length) tiles.push(openTileMap[y + 1][x + 1]);
-  }
-
-  if (x - 1 >= 0) tiles.push(openTileMap[y][x - 1]);
-
-  if (x + 1 < openTileMap[0].length) tiles.push(openTileMap[y][x + 1]);
-
-  return tiles.filter((v) => v === "FLAGGED").length;
+  return directions.reduce((count, [dx, dy]) => {
+    const nx = x + dx;
+    const ny = y + dy;
+    if (isValid(nx, ny) && openTileMap[ny][nx] === "FLAGGED") {
+      count += 1;
+    }
+    return count;
+  }, 0);
 };
 
 export const checkTempClassTile: (
@@ -141,3 +159,19 @@ export const checkTempClassTile: (
 ) => boolean = (tempClassTiles, [x, y]) => {
   return tempClassTiles?.findIndex((v) => v[0] === x && v[1] === y) >= 0;
 };
+
+function isMobile() {
+  var user = navigator.userAgent;
+  var is_mobile = false;
+
+  if (
+    user.indexOf("iPhone") > -1 ||
+    user.indexOf("Android") > -1 ||
+    user.indexOf("iPad") > -1 ||
+    user.indexOf("iPod") > -1
+  ) {
+    is_mobile = true;
+  }
+
+  return is_mobile;
+}
