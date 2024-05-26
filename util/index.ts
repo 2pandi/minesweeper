@@ -108,6 +108,11 @@ export const checkTempClassTile: (
 };
 
 export const isMobile = (): boolean => {
+  if (typeof navigator === "undefined") {
+    // navigator가 정의되지 않은 환경에서는 false를 반환
+    return false;
+  }
+
   const userAgent = navigator.userAgent;
   const mobileDevices = ["iPhone", "Android", "iPad", "iPod"];
 
