@@ -14,9 +14,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <head>
-        <link rel="preload" href="/" as="font" type="font/woff2" />
-      </head>
       <body>{children}</body>
     </html>
   );

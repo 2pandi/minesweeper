@@ -3,7 +3,7 @@
 import React from "react";
 import Tile from "./Tile";
 import { useGameStore } from "@/zustand/gameStore";
-import { checkTempClassTile } from "@/util";
+import { checkTempClassTile, registClickEvent } from "@/util";
 import { TOTAL_BOMB } from "@/constants";
 import useSetMap from "@/hooks/useSetMap";
 import useOpenTile from "@/hooks/useOpenTile";
@@ -121,9 +121,14 @@ export default function TileBox() {
               y={yI}
               openStatus={openTileMap[yI][xI]}
               value={map[yI][xI] || undefined}
-              onMouseDown={() => mouseDownHandler(xI, yI)}
-              onMouseUp={() => mouseUpHandler(xI, yI)}
-              onMouseLeave={mouseLeaveHandler}
+              {...registClickEvent(
+                () => mouseDownHandler(xI, yI),
+                () => mouseUpHandler(xI, yI),
+                mouseLeaveHandler
+              )}
+              // onMouseDown={() => mouseDownHandler(xI, yI)}
+              // onMouseUp={() => mouseUpHandler(xI, yI)}
+              // onMouseLeave={mouseLeaveHandler}
               tempClassName={
                 checkTempClassTile(tempClassTiles, [xI, yI])
                   ? "opened"

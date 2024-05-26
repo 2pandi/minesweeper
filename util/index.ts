@@ -61,59 +61,6 @@ const placeNumber = (
   return bombMap;
 };
 
-const placeNumber1 = (bombMap: Array<Array<T_mapTile>>) => {
-  for (let i = 0; i < bombMap.length; i++) {
-    for (let j = 0; j < bombMap[0].length; j++) {
-      if (bombMap[i][j] === BOMB) {
-        if (i - 1 >= 0) {
-          if (bombMap[i - 1][j] === undefined) bombMap[i - 1][j] = 1;
-          else if (typeof bombMap[i - 1][j] === "number")
-            (bombMap[i - 1][j] as number)++;
-
-          if (j - 1 >= 0) {
-            if (bombMap[i - 1][j - 1] === undefined) bombMap[i - 1][j - 1] = 1;
-            else if (typeof bombMap[i - 1][j - 1] === "number")
-              (bombMap[i - 1][j - 1] as number)++;
-          }
-          if (j + 1 < bombMap[0].length) {
-            if (bombMap[i - 1][j + 1] === undefined) bombMap[i - 1][j + 1] = 1;
-            else if (typeof bombMap[i - 1][j + 1] === "number")
-              (bombMap[i - 1][j + 1] as number)++;
-          }
-        }
-        if (i + 1 < bombMap.length) {
-          if (bombMap[i + 1][j] === undefined) bombMap[i + 1][j] = 1;
-          else if (typeof bombMap[i + 1][j] === "number")
-            (bombMap[i + 1][j] as number)++;
-
-          if (j - 1 >= 0) {
-            if (bombMap[i + 1][j - 1] === undefined) bombMap[i + 1][j - 1] = 1;
-            else if (typeof bombMap[i + 1][j - 1] === "number")
-              (bombMap[i + 1][j - 1] as number)++;
-          }
-          if (j + 1 < bombMap[0].length) {
-            if (bombMap[i + 1][j + 1] === undefined) bombMap[i + 1][j + 1] = 1;
-            else if (typeof bombMap[i + 1][j + 1] === "number")
-              (bombMap[i + 1][j + 1] as number)++;
-          }
-        }
-        if (j - 1 >= 0) {
-          if (bombMap[i][j - 1] === undefined) bombMap[i][j - 1] = 1;
-          else if (typeof bombMap[i][j - 1] === "number")
-            (bombMap[i][j - 1] as number)++;
-        }
-        if (j + 1 < bombMap[0].length) {
-          if (bombMap[i][j + 1] === undefined) bombMap[i][j + 1] = 1;
-          else if (typeof bombMap[i][j + 1] === "number")
-            (bombMap[i][j + 1] as number)++;
-        }
-      }
-    }
-  }
-
-  return bombMap;
-};
-
 export const makeMap = (
   map: T_mapTile[][],
   startingPoint: [number, number],
@@ -160,18 +107,27 @@ export const checkTempClassTile: (
   return tempClassTiles?.findIndex((v) => v[0] === x && v[1] === y) >= 0;
 };
 
-function isMobile() {
-  var user = navigator.userAgent;
-  var is_mobile = false;
+export const isMobile = (): boolean => {
+  const userAgent = navigator.userAgent;
+  const mobileDevices = ["iPhone", "Android", "iPad", "iPod"];
 
-  if (
-    user.indexOf("iPhone") > -1 ||
-    user.indexOf("Android") > -1 ||
-    user.indexOf("iPad") > -1 ||
-    user.indexOf("iPod") > -1
-  ) {
-    is_mobile = true;
+  return mobileDevices.some((device) => userAgent.includes(device));
+};
+
+export const registClickEvent = (
+  onPointerDown: () => void,
+  onPointerUp: () => void,
+  onMouseLeave: () => void
+) => {
+  if (isMobile()) {
+    return {
+      onTouchStart: onPointerDown,
+      onTouchEnd: onPointerUp,
+    };
   }
-
-  return is_mobile;
-}
+  return {
+    onmousedown: onPointerDown,
+    onMouseUp: onPointerUp,
+    onMouseLeave,
+  };
+};
