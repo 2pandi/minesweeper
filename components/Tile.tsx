@@ -5,6 +5,7 @@ import { BOMB, FLAG, TILE_STATUS } from "@/constants";
 import { T_mapTile } from "@/interface";
 import { useGameStore } from "@/zustand/gameStore";
 import { pacifico } from "@/util/fonts";
+import { registClickEvent } from "@/util";
 
 interface I_tileProps extends React.HTMLAttributes<HTMLButtonElement> {
   openStatus: keyof typeof TILE_STATUS;
@@ -12,6 +13,9 @@ interface I_tileProps extends React.HTMLAttributes<HTMLButtonElement> {
   x: number;
   y: number;
   tempClassName?: string;
+  onPointerDown: () => void;
+  onPointerUp: () => void;
+  onPointerLeave?: () => void;
 }
 
 export default function Tile(props: I_tileProps) {
@@ -19,9 +23,9 @@ export default function Tile(props: I_tileProps) {
     openStatus,
     value,
     style,
-    onMouseDown,
-    onMouseLeave,
-    onMouseUp,
+    onPointerDown,
+    onPointerLeave,
+    onPointerUp,
     tempClassName,
   } = props;
 
@@ -39,9 +43,7 @@ export default function Tile(props: I_tileProps) {
           ? "opened"
           : ""
       }`}
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
-      onMouseLeave={onMouseLeave}
+      {...registClickEvent(onPointerDown, onPointerUp, onPointerLeave!)}
       style={{ ...style, ...buttonColor }}
     >
       {openStatus === "CONCEALED" && status !== "LOSE"

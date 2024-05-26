@@ -120,9 +120,9 @@ export const isMobile = (): boolean => {
 };
 
 export const registClickEvent = (
-  onPointerDown: () => void,
-  onPointerUp: () => void,
-  onMouseLeave: () => void
+  onPointerDown: (e: any) => void,
+  onPointerUp: (e: any) => void,
+  onMouseLeave: (e: any) => void
 ) => {
   if (isMobile()) {
     return {
@@ -131,7 +131,7 @@ export const registClickEvent = (
     };
   }
   return {
-    onmousedown: onPointerDown,
+    onMouseDown: onPointerDown,
     onMouseUp: onPointerUp,
     onMouseLeave,
   };

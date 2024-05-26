@@ -121,14 +121,9 @@ export default function TileBox() {
               y={yI}
               openStatus={openTileMap[yI][xI]}
               value={map[yI][xI] || undefined}
-              {...registClickEvent(
-                () => mouseDownHandler(xI, yI),
-                () => mouseUpHandler(xI, yI),
-                mouseLeaveHandler
-              )}
-              // onMouseDown={() => mouseDownHandler(xI, yI)}
-              // onMouseUp={() => mouseUpHandler(xI, yI)}
-              // onMouseLeave={mouseLeaveHandler}
+              onPointerDown={() => mouseDownHandler(xI, yI)}
+              onPointerUp={() => mouseUpHandler(xI, yI)}
+              onPointerLeave={mouseLeaveHandler}
               tempClassName={
                 checkTempClassTile(tempClassTiles, [xI, yI])
                   ? "opened"
