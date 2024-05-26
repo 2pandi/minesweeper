@@ -21,7 +21,7 @@ export default function useOpenTile() {
       const newOpenTileMap = openTileMap.map((line) => line.map((v) => v));
       if (status === "LOSE") return;
 
-      if (map[y][x] === BOMB) {
+      if (map[y][x] === BOMB && newOpenTileMap[y][x] !== "FLAGGED") {
         setBombedPoint([x, y]);
         lose();
       }
@@ -33,7 +33,6 @@ export default function useOpenTile() {
           if (isMapSet && map[y][x] === undefined)
             boomTile(x, y, newOpenTileMap);
           newOpenTileMap[y][x] = "OPENED";
-
           break;
         case "OPENED":
           const totalFlag = countFlagAroundTile(x, y, openTileMap);
