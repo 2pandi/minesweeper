@@ -3,8 +3,35 @@ import '@/style/global.scss';
 import '@/style/components.scss';
 
 export const metadata: Metadata = {
-  title: 'Minesweeper',
-  description: "2pandi's toy-project",
+  title: '지뢰찾기 - Minesweeper',
+  description:
+    '무료 온라인 지뢰찾기 게임! 브라우저에서 바로 플레이하는 고전 Minesweeper.',
+  keywords: [
+    '지뢰찾기',
+    'minesweeper',
+    '무료 게임',
+    '웹 게임',
+    '퍼즐',
+    '브라우저',
+    '고전 게임',
+  ],
+  openGraph: {
+    title: '지뢰찾기 - Minesweeper',
+    description: '무료 온라인 지뢰찾기! 지금 바로 플레이하세요.',
+    url: process.env.NEXT_PUBLIC_DOMAIN,
+    images: [
+      {
+        url: process.env.NEXT_PUBLIC_OG_IMAGE || '',
+        width: 1200,
+        height: 630,
+        alt: '지뢰찾기 썸네일',
+      },
+    ],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
@@ -20,7 +47,7 @@ export default function RootLayout({
       />
       <script
         async
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7784987752318795"
+        src={process.env.NEXT_PUBLIC_ADS_SRC}
         crossOrigin="anonymous"
       ></script>
       <body>{children}</body>
