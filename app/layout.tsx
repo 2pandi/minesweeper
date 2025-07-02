@@ -24,7 +24,7 @@ export const metadata: Metadata = {
         url: process.env.NEXT_PUBLIC_OG_IMAGE || '',
         width: 1200,
         height: 630,
-        alt: '지뢰찾기 썸네일',
+        alt: '지뢰찾기',
       },
     ],
   },
